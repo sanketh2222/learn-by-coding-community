@@ -19,7 +19,6 @@
 - [ ] The system should support different fee calculation model
   - [ ] Fixed per-hour parking fee model, based on vehicle type
   - [ ] Dynamic per-hour parking fee model based on vehicle type, total hours, and time of day, day of week.
-- Customers can pay the p
 - [ ] Customer can pay via cash, card, online
 - [ ] The system should not allow vehicles more than the maximum capacity of the parking lot.
 - [ ] Admins can add a new parking level and parking spots
@@ -28,6 +27,5 @@
 ## Class Diagram
 
 
-
 ## Open Issues
-- [ ] 
+- [ ] [Create classes to cover the basic requirements.](https://github.com/rohitnandi12/learn-by-coding-community/issues/1)
