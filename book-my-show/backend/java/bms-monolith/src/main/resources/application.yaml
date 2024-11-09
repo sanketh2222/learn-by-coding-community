@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: BMS Monolith
+  datasource:
+    url: jdbc:mysql://localhost:3306/bms
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: always
+
+server:
+  servlet:
+    context-path: /api/v1
