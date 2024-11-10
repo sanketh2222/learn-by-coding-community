@@ -1,7 +1,6 @@
-package org.lbcc.bms.bms_monolith.vendor.dto;
+package org.lbcc.bms.bms_monolith.admin.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 
 import java.util.List;

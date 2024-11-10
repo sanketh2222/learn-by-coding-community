@@ -1,20 +1,20 @@
-package org.lbcc.bms.bms_monolith.vendor.controller;
+package org.lbcc.bms.bms_monolith.admin.controller;
 
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorOnboardRequestDto;
-import org.lbcc.bms.bms_monolith.vendor.service.VendorService;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
+import org.lbcc.bms.bms_monolith.admin.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/vendor")
 @RestController
-public class VendorOnboardingController {
+public class AdminVendorOnboardingController {
 
     private final VendorService vendorService;
 
     @Autowired
-    public VendorOnboardingController(VendorService vendorService) {
+    public AdminVendorOnboardingController(VendorService vendorService) {
         this.vendorService = vendorService;
     }
 

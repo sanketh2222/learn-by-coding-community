@@ -1,18 +1,22 @@
-package org.lbcc.bms.bms_monolith.vendor.service;
+package org.lbcc.bms.bms_monolith.admin.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorOnboardRequestDto;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorOnboardResponseDto;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorSearchResponseDto;
-import org.lbcc.bms.bms_monolith.vendor.exception.InvalidVendorRequest;
-import org.lbcc.bms.bms_monolith.vendor.exception.VendorNotFoundException;
-import org.lbcc.bms.bms_monolith.vendor.helpers.VendorServiceTestHelper;
-import org.lbcc.bms.bms_monolith.vendor.repository.VendorRepository;
+
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
+import org.lbcc.bms.bms_monolith.admin.exception.InvalidVendorRequest;
+import org.lbcc.bms.bms_monolith.admin.exception.VendorNotFoundException;
+import org.lbcc.bms.bms_monolith.admin.helpers.VendorServiceTestHelper;
+import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
+
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;

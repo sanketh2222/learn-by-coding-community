@@ -1,10 +1,8 @@
-package org.lbcc.bms.bms_monolith.vendor.dto;
+package org.lbcc.bms.bms_monolith.admin.dto;
 
 import lombok.Data;
-import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data

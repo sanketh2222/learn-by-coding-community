@@ -1,6 +1,6 @@
-package org.lbcc.bms.bms_monolith.vendor.helpers;
+package org.lbcc.bms.bms_monolith.admin.helpers;
 
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorOnboardRequestDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
