@@ -5,11 +5,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
+
+import lombok.*;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 
 @Entity
@@ -17,6 +14,7 @@ import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Vendor extends BaseAuditingEntity {
 
     private String name;
@@ -24,6 +22,8 @@ public class Vendor extends BaseAuditingEntity {
     private String email;
     private String address;
     private String website;
+    private String gstNo;
+    private String panNo;
 
     @Enumerated(EnumType.STRING)
     private VendorStatus status;
