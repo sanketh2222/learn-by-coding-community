@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
 
 import java.time.Instant;
 import java.util.List;
@@ -47,7 +46,7 @@ public class Event extends BaseAuditingEntity {
     @Column(nullable = false)
     private Instant startDate;
 
-    @Column(length = 255)
+    @Column // default 255 in length
     private String thumbnailUrl;
 
     @Column(nullable = false)

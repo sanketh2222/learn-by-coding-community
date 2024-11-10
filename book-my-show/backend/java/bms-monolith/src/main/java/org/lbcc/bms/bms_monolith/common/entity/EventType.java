@@ -1,5 +1,6 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +15,6 @@ import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
 @NoArgsConstructor
 public class EventType extends BaseAuditingEntity {
 
+    @Column(length = 15)
     private String label;
 }

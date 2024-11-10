@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -12,9 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
-import org.lbcc.bms.bms_monolith.entity.enums.OperationalStatus;
-import org.lbcc.bms.bms_monolith.entity.enums.VenueType;
+import org.lbcc.bms.bms_monolith.common.enums.OperationalStatus;
+import org.lbcc.bms.bms_monolith.common.enums.VenueType;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Venue extends BaseAuditingEntity {
 
+    private String name;
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;

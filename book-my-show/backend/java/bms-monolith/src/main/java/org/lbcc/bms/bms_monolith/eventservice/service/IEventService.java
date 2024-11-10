@@ -1,6 +1,6 @@
-package org.lbcc.bms.bms_monolith.service;
+package org.lbcc.bms.bms_monolith.eventservice.service;
 
-import org.lbcc.bms.bms_monolith.entity.Event;
+import org.lbcc.bms.bms_monolith.common.entity.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

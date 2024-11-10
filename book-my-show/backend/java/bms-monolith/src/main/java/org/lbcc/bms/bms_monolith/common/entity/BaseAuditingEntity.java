@@ -43,10 +43,10 @@ public abstract class BaseAuditingEntity {
     private Instant lastModifiedDate;
 
     @CreatedBy
-    @Column(updatable = false)
+    @Column(updatable = false, length = 10)
     private String createdBy;
 
     @LastModifiedBy
-    @Column(insertable = false)
+    @Column(insertable = false, length = 10)
     private String lastModifiedBy;
 }

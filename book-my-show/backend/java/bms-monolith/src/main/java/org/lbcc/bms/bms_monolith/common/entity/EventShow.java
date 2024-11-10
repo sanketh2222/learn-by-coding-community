@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ElementCollection;
@@ -12,17 +12,16 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
-import org.lbcc.bms.bms_monolith.entity.enums.Genre;
+import org.lbcc.bms.bms_monolith.common.enums.Genre;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @SuperBuilder
 public class EventShow extends BaseAuditingEntity {
 

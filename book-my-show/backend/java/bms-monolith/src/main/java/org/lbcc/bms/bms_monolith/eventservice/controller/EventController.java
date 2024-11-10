@@ -1,9 +1,9 @@
-package org.lbcc.bms.bms_monolith.controller;
+package org.lbcc.bms.bms_monolith.eventservice.controller;
 
 import org.lbcc.bms.bms_monolith.common.constants.BMSConstants;
 import org.lbcc.bms.bms_monolith.common.response.ApiListResponse;
-import org.lbcc.bms.bms_monolith.entity.Event;
-import org.lbcc.bms.bms_monolith.service.IEventService;
+import org.lbcc.bms.bms_monolith.common.entity.Event;
+import org.lbcc.bms.bms_monolith.eventservice.service.IEventService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

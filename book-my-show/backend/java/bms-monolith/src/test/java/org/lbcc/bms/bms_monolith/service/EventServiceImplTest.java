@@ -2,10 +2,10 @@ package org.lbcc.bms.bms_monolith.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.lbcc.bms.bms_monolith.entity.Event;
-import org.lbcc.bms.bms_monolith.exception.EventServiceException;
-import org.lbcc.bms.bms_monolith.repository.IEventRepository;
-import org.lbcc.bms.bms_monolith.service.impl.EventServiceImpl;
+import org.lbcc.bms.bms_monolith.common.entity.Event;
+import org.lbcc.bms.bms_monolith.eventservice.exception.EventServiceException;
+import org.lbcc.bms.bms_monolith.eventservice.repository.IEventRepository;
+import org.lbcc.bms.bms_monolith.eventservice.service.impl.EventServiceImpl;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

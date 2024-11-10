@@ -1,15 +1,16 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
 @SuperBuilder
 public class SeatTypeInShow extends BaseAuditingEntity {
 

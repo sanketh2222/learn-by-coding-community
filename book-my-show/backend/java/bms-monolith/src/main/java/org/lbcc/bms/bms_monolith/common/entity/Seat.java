@@ -1,16 +1,11 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
-import org.lbcc.bms.bms_monolith.entity.enums.OperationalStatus;
+import org.lbcc.bms.bms_monolith.common.enums.OperationalStatus;
 
 @Entity
 @Getter
@@ -30,5 +25,6 @@ public class Seat extends BaseAuditingEntity {
     @Enumerated(EnumType.STRING)
     private OperationalStatus operationalStatus;
 
+    @Column(length = 5)
     private String label;
 }

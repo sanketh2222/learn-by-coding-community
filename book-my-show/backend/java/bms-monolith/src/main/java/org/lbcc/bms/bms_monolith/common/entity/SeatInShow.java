@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.entity;
+package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -9,8 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
-import org.lbcc.bms.bms_monolith.entity.enums.BookingStatus;
+import org.lbcc.bms.bms_monolith.common.enums.BookingStatus;
 
 @Entity
 @Getter
