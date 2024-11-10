@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.vendor.repository;
+package org.lbcc.bms.bms_monolith.admin.repository;
 
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.vendor.dto;
+package org.lbcc.bms.bms_monolith.admin.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

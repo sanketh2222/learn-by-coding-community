@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.vendor.exception;
+package org.lbcc.bms.bms_monolith.admin.exception;
 
 public class VendorNotFoundException extends RuntimeException {
 

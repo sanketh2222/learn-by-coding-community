@@ -1,18 +1,22 @@
-package org.lbcc.bms.bms_monolith.vendor.service;
+package org.lbcc.bms.bms_monolith.admin.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorOnboardRequestDto;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorOnboardResponseDto;
-import org.lbcc.bms.bms_monolith.vendor.dto.VendorSearchResponseDto;
-import org.lbcc.bms.bms_monolith.vendor.exception.InvalidVendorRequest;
-import org.lbcc.bms.bms_monolith.vendor.exception.VendorNotFoundException;
-import org.lbcc.bms.bms_monolith.vendor.helpers.VendorServiceTestHelper;
-import org.lbcc.bms.bms_monolith.vendor.repository.VendorRepository;
+
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
+import org.lbcc.bms.bms_monolith.admin.exception.InvalidVendorRequest;
+import org.lbcc.bms.bms_monolith.admin.exception.VendorNotFoundException;
+import org.lbcc.bms.bms_monolith.admin.helpers.VendorServiceTestHelper;
+import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
+
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class VendorServiceTest {
+public class AdminServiceTest {
 
     @Mock
     private VendorRepository vendorRepository;
 
     @InjectMocks
-    private VendorService vendorService;
+    private AdminService adminService;
 
     private Vendor vendor;
 
@@ -52,7 +56,7 @@ public class VendorServiceTest {
     void searchVendorWithValidNameReturnsVendorList() {
         when(vendorRepository.findByNameContaining("Test Vendor")).thenReturn(List.of(vendor));
 
-        ApiResponse<VendorSearchResponseDto> response = vendorService.searchVendor("Test Vendor");
+        ApiResponse<VendorSearchResponseDto> response = adminService.searchVendor("Test Vendor");
 
         assertTrue(response.isSuccess());
         assertEquals("Vendor found successfully", response.getMessage());
@@ -63,13 +67,13 @@ public class VendorServiceTest {
     @Test
     @DisplayName("Search vendor with empty name throws InvalidVendorRequest")
     void searchVendorWithEmptyNameThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> vendorService.searchVendor(""));
+        assertThrows(InvalidVendorRequest.class, () -> adminService.searchVendor(""));
     }
 
     @Test
     @DisplayName("Search vendor with null name throws InvalidVendorRequest")
     void searchVendorWithNullNameThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> vendorService.searchVendor(null));
+        assertThrows(InvalidVendorRequest.class, () -> adminService.searchVendor(null));
     }
 
     @Test
@@ -77,7 +81,7 @@ public class VendorServiceTest {
     void searchVendorWithNonExistingNameReturnsNoVendorFound() {
         when(vendorRepository.findByNameContaining("Non Existing Vendor")).thenReturn(Collections.emptyList());
 
-        ApiResponse<VendorSearchResponseDto> response = vendorService.searchVendor("Non Existing Vendor");
+        ApiResponse<VendorSearchResponseDto> response = adminService.searchVendor("Non Existing Vendor");
 
         assertFalse(response.isSuccess());
         assertEquals("No vendor found with given name", response.getMessage());
@@ -95,7 +99,7 @@ public class VendorServiceTest {
 
         when(vendorRepository.findById(vendorId)).thenReturn(Optional.of(vendor));
 
-        ApiResponse<String> response = vendorService.updatedVendorStatus(vendorId.toString(), VendorStatus.SUSPENDED);
+        ApiResponse<String> response = adminService.updatedVendorStatus(vendorId.toString(), VendorStatus.SUSPENDED);
 
         assertTrue(response.isSuccess());
         assertEquals("Vendor status updated successfully", response.getMessage());
@@ -107,20 +111,20 @@ public class VendorServiceTest {
     @Test
     @DisplayName("Update vendor status with null id throws InvalidVendorRequest")
     void updateVendorStatusWithNullIdThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> vendorService.updatedVendorStatus(null, VendorStatus.SUSPENDED));
+        assertThrows(InvalidVendorRequest.class, () -> adminService.updatedVendorStatus(null, VendorStatus.SUSPENDED));
     }
 
     @Test
     @DisplayName("Update vendor status with empty id throws InvalidVendorRequest")
     void updateVendorStatusWithEmptyIdThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> vendorService.updatedVendorStatus("", VendorStatus.SUSPENDED));
+        assertThrows(InvalidVendorRequest.class, () -> adminService.updatedVendorStatus("", VendorStatus.SUSPENDED));
     }
 
     @Test
     @DisplayName("Update vendor status with null status throws InvalidVendorRequest")
     void updateVendorStatusWithNullStatusThrowsInvalidVendorRequest() {
         UUID vendorId = UUID.randomUUID();
-        assertThrows(InvalidVendorRequest.class, () -> vendorService.updatedVendorStatus(vendorId.toString(), null));
+        assertThrows(InvalidVendorRequest.class, () -> adminService.updatedVendorStatus(vendorId.toString(), null));
     }
 
     @Test
@@ -129,7 +133,7 @@ public class VendorServiceTest {
         UUID vendorId = UUID.randomUUID();
         when(vendorRepository.findById(vendorId)).thenReturn(Optional.empty());
 
-        assertThrows(VendorNotFoundException.class, () -> vendorService.updatedVendorStatus(vendorId.toString(), VendorStatus.SUSPENDED));
+        assertThrows(VendorNotFoundException.class, () -> adminService.updatedVendorStatus(vendorId.toString(), VendorStatus.SUSPENDED));
         verify(vendorRepository, times(1)).findById(vendorId);
     }
 
@@ -144,7 +148,7 @@ public class VendorServiceTest {
 
         when(vendorRepository.save(any(Vendor.class))).thenReturn(vendor);
 
-        ApiResponse<VendorOnboardResponseDto> response = vendorService.onboardNewVendor(requestDto);
+        ApiResponse<VendorOnboardResponseDto> response = adminService.onboardNewVendor(requestDto);
 
         assertTrue(response.isSuccess());
         assertEquals("Vendor onboarded successfully", response.getMessage());
