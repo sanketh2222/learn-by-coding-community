@@ -6,6 +6,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 
+import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
