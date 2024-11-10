@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class VendorServiceTestHelper {
+public class AdminServiceTestHelper {
 
     public VendorOnboardRequestDto buildVendorOnboardRequest() {
         MultipartFile logoFile = new MockMultipartFile("logoFile", "logo.png", "image/png", "Sample logo".getBytes());

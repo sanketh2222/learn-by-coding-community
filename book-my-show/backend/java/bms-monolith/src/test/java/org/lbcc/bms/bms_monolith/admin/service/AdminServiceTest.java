@@ -13,7 +13,7 @@ import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
 import org.lbcc.bms.bms_monolith.admin.exception.InvalidVendorRequest;
 import org.lbcc.bms.bms_monolith.admin.exception.VendorNotFoundException;
-import org.lbcc.bms.bms_monolith.admin.helpers.VendorServiceTestHelper;
+import org.lbcc.bms.bms_monolith.admin.helpers.AdminServiceTestHelper;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
 
 
@@ -42,7 +42,7 @@ public class AdminServiceTest {
     private Vendor vendor;
 
     @Autowired
-    private VendorServiceTestHelper vendorServiceTestHelper;
+    private AdminServiceTestHelper adminServiceTestHelper;
 
     @BeforeEach
     void setUp() {
@@ -140,7 +140,7 @@ public class AdminServiceTest {
     @Test
     @DisplayName("Onboard new vendor with valid request returns success response")
     void onboardNewVendorWithValidRequestReturnsSuccessResponse() {
-        VendorOnboardRequestDto requestDto = vendorServiceTestHelper.buildVendorOnboardRequest();
+        VendorOnboardRequestDto requestDto = adminServiceTestHelper.buildVendorOnboardRequest();
         Vendor vendor = new Vendor();
         vendor.setId(UUID.randomUUID());
         vendor.setName("New Vendor");
