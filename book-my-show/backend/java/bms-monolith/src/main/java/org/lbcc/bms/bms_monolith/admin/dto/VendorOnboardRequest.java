@@ -12,10 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-public class VendorOnboardRequestDto {
+public class VendorOnboardRequest {
 
     @NotBlank(message = "Vendor name is required")
-    @Size(max = 30, message = "Vendor name must be at most 30 characters")
+    @Size(min = 3, max = 30, message = "Vendor name must be at most 30 characters")
     private String name;
 
     @NotBlank(message = "Contact is required")
@@ -33,9 +33,11 @@ public class VendorOnboardRequestDto {
     private String website;
 
     @NotBlank(message = "GST number is required")
+    @Pattern(regexp = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[Z]{1}[0-9]{1}$", message = "Invalid GST number. Please provide a valid GST number.")
     private String gstNo;
 
     @NotBlank(message = "PAN number is required")
+    @Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "Invalid PAN number. Please provide a valid PAN number.")
     private String panNo;
 
     @NotBlank(message = "Registration date is required")
@@ -45,17 +47,17 @@ public class VendorOnboardRequestDto {
     @NotNull(message = "Logo is required")
     private MultipartFile logoFile;
 
-    public static Vendor buildVendorFromDto(VendorOnboardRequestDto vendorOnboardRequestDto) {
+    public static Vendor buildVendorFromDto(VendorOnboardRequest vendorOnboardRequest) {
         return Vendor.builder()
-                .name(vendorOnboardRequestDto.getName())
-                .contactNumber(vendorOnboardRequestDto.getContactNumber())
-                .email(vendorOnboardRequestDto.getEmail())
-                .address(vendorOnboardRequestDto.getAddress())
-                .website(vendorOnboardRequestDto.getWebsite())
-                .gstNo(vendorOnboardRequestDto.getGstNo())
-                .panNo(vendorOnboardRequestDto.getPanNo())
-                .registrationDate(vendorOnboardRequestDto.getRegistrationDate())
-                .logoUrl(vendorOnboardRequestDto.getLogoFile().getOriginalFilename())
+                .name(vendorOnboardRequest.getName())
+                .contactNumber(vendorOnboardRequest.getContactNumber())
+                .email(vendorOnboardRequest.getEmail())
+                .address(vendorOnboardRequest.getAddress())
+                .website(vendorOnboardRequest.getWebsite())
+                .gstNo(vendorOnboardRequest.getGstNo())
+                .panNo(vendorOnboardRequest.getPanNo())
+                .registrationDate(vendorOnboardRequest.getRegistrationDate())
+                .logoUrl(vendorOnboardRequest.getLogoFile().getOriginalFilename())
                 .status(VendorStatus.ACTIVE)
                 .build();
     }

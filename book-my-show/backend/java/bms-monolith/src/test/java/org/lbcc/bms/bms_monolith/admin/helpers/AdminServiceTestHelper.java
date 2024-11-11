@@ -1,6 +1,6 @@
 package org.lbcc.bms.bms_monolith.admin.helpers;
 
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,10 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class AdminServiceTestHelper {
 
-    public VendorOnboardRequestDto buildVendorOnboardRequest() {
+    public VendorOnboardRequest buildVendorOnboardRequest() {
         MultipartFile logoFile = new MockMultipartFile("logoFile", "logo.png", "image/png", "Sample logo".getBytes());
 
-        return VendorOnboardRequestDto.builder()
+        return VendorOnboardRequest.builder()
                 .name("Sample Vendor")
                 .contactNumber("1234567890")
                 .email("sample@example.com")
@@ -24,9 +24,9 @@ public class AdminServiceTestHelper {
                 .build();
     }
 
-    public VendorOnboardRequestDto buildInvalidVendorOnboardRequest() {
+    public VendorOnboardRequest buildInvalidVendorOnboardRequest() {
 
-        return VendorOnboardRequestDto.builder()
+        return VendorOnboardRequest.builder()
                 .name("Sample Vendor")
                 .contactNumber("1234567890")
                 .email("sample@example.com")

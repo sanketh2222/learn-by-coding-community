@@ -2,10 +2,11 @@ package org.lbcc.bms.bms_monolith.admin.controller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponse;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
 import org.lbcc.bms.bms_monolith.admin.service.AdminService;
 import org.lbcc.bms.bms_monolith.common.response.ApiListResponse;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
@@ -32,12 +33,12 @@ public class AdminVendorOnboardingController {
     }
 
     @PostMapping("/onboard")
-    public ResponseEntity<?> onboardNewVendor(@RequestBody VendorOnboardRequestDto vendorOnboardRequestDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.onboardNewVendor(vendorOnboardRequestDto));
+    public ResponseEntity<ApiResponse<VendorOnboardResponse>> onboardNewVendor(@RequestBody VendorOnboardRequest vendorOnboardRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.onboardNewVendor(vendorOnboardRequest));
     }
 
     @PutMapping("/{vendorId}/{status}")
-    public ResponseEntity<?> updateVendorStatus(@PathVariable String vendorId, @PathVariable VendorStatus status) {
+    public ResponseEntity<ApiResponse<String>> updateVendorStatus(@PathVariable String vendorId, @PathVariable VendorStatus status) {
         return ResponseEntity.ok(adminService.updatedVendorStatus(vendorId, status));
     }
 
@@ -56,10 +57,10 @@ public class AdminVendorOnboardingController {
         } else {
             List<VendorDto> vendorsList = adminService.searchVendor(vendorName);// Search vendors by name
             boolean vendorsFound = !vendorsList.isEmpty();
-            ApiResponse<VendorSearchResponseDto> response = ApiResponse.<VendorSearchResponseDto>builder()
+            ApiResponse<VendorSearchResponse> response = ApiResponse.<VendorSearchResponse>builder()
                     .success(vendorsFound)
                     .message(vendorsFound ? "Vendors fetched successfully" : "No vendors found")
-                    .data(vendorsFound ? new VendorSearchResponseDto(vendorsList) : null)
+                    .data(vendorsFound ? new VendorSearchResponse(vendorsList) : null)
                     .build();
             return ResponseEntity.ok(response);
         }

@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Builder;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 
 @Entity

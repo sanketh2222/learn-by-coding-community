@@ -6,7 +6,7 @@ import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import java.util.List;
 
 @AllArgsConstructor
-public class VendorSearchResponseDto {
+public class VendorSearchResponse {
     private List<VendorDto> vendorDtoList;
 
     public static VendorDto buildVendorDtoFromVendor(Vendor vendor) {
@@ -26,6 +26,6 @@ public class VendorSearchResponseDto {
     }
 
     public static List<VendorDto> buildVendorDtoListFromVendorList(List<Vendor> vendorList) {
-        return vendorList.stream().map(VendorSearchResponseDto::buildVendorDtoFromVendor).toList();
+        return vendorList.stream().map(VendorSearchResponse::buildVendorDtoFromVendor).toList();
     }
 }

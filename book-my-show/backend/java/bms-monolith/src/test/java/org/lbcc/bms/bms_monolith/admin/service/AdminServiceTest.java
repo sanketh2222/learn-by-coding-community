@@ -9,9 +9,9 @@ import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
 
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponse;
 import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
 import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.helpers.AdminServiceTestHelper;
@@ -59,10 +59,10 @@ public class AdminServiceTest {
         when(vendorRepository.findByNameContaining("Test Vendor")).thenReturn(List.of(vendor));
 
         List<VendorDto> vendorDtoList = adminService.searchVendor("Test Vendor");
-        ApiResponse<VendorSearchResponseDto> response = ApiResponse.<VendorSearchResponseDto>builder()
+        ApiResponse<VendorSearchResponse> response = ApiResponse.<VendorSearchResponse>builder()
                 .success(true)
                 .message("Vendor found successfully")
-                .data(new VendorSearchResponseDto(vendorDtoList))
+                .data(new VendorSearchResponse(vendorDtoList))
                 .build();
 
         assertTrue(response.isSuccess());
@@ -89,10 +89,10 @@ public class AdminServiceTest {
         when(vendorRepository.findByNameContaining("Non Existing Vendor")).thenReturn(Collections.emptyList());
 
         List<VendorDto> vendorDtoList = adminService.searchVendor("Non Existing Vendor");
-        ApiResponse<VendorSearchResponseDto> response = ApiResponse.<VendorSearchResponseDto>builder()
+        ApiResponse<VendorSearchResponse> response = ApiResponse.<VendorSearchResponse>builder()
                 .success(false)
                 .message("No vendor found with given name")
-                .data(new VendorSearchResponseDto(vendorDtoList))
+                .data(new VendorSearchResponse(vendorDtoList))
                 .build();
         assertFalse(response.isSuccess());
         assertEquals("No vendor found with given name", response.getMessage());
@@ -151,7 +151,7 @@ public class AdminServiceTest {
     @Test
     @DisplayName("Onboard new vendor with valid request returns success response")
     void onboardNewVendorWithValidRequestReturnsSuccessResponse() {
-        VendorOnboardRequestDto requestDto = adminServiceTestHelper.buildVendorOnboardRequest();
+        VendorOnboardRequest requestDto = adminServiceTestHelper.buildVendorOnboardRequest();
         Vendor vendor = new Vendor();
         vendor.setId(UUID.randomUUID());
         vendor.setName("New Vendor");
@@ -159,7 +159,7 @@ public class AdminServiceTest {
 
         when(vendorRepository.save(any(Vendor.class))).thenReturn(vendor);
 
-        ApiResponse<VendorOnboardResponseDto> response = adminService.onboardNewVendor(requestDto);
+        ApiResponse<VendorOnboardResponse> response = adminService.onboardNewVendor(requestDto);
 
         assertTrue(response.isSuccess());
         assertEquals("Vendor onboarded successfully", response.getMessage());

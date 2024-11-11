@@ -6,7 +6,7 @@ import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 
 @Data
 @AllArgsConstructor
-public class VendorOnboardResponseDto {
+public class VendorOnboardResponse {
 
     private String vendorId;
     private String vendorName;

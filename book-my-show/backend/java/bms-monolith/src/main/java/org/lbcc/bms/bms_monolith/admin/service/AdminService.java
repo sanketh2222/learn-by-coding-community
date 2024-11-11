@@ -6,9 +6,9 @@ import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
+import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponse;
 import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
 import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
@@ -29,16 +29,16 @@ public class AdminService {
         this.vendorRepository = vendorRepository;
     }
 
-    public ApiResponse<VendorOnboardResponseDto> onboardNewVendor(VendorOnboardRequestDto vendorOnboardRequestDto) {
-        log.info("Onboarding new vendor {}", vendorOnboardRequestDto.getName());
+    public ApiResponse<VendorOnboardResponse> onboardNewVendor(VendorOnboardRequest vendorOnboardRequest) {
+        log.info("Onboarding new vendor {}", vendorOnboardRequest.getName());
         //TODO: will save the logoFile to file storage like s3 and get the URL and then update the vendor object before saving
-        Vendor vendor = vendorRepository.save(VendorOnboardRequestDto.buildVendorFromDto(vendorOnboardRequestDto));
+        Vendor vendor = vendorRepository.save(VendorOnboardRequest.buildVendorFromDto(vendorOnboardRequest));
         log.info("Vendor onboarded successfully with id {}", vendor.getId());
 
-        return ApiResponse.<VendorOnboardResponseDto>builder()
+        return ApiResponse.<VendorOnboardResponse>builder()
                 .success(true)
                 .message("Vendor onboarded successfully")
-                .data(new VendorOnboardResponseDto(vendor.getId().toString(), vendor.getName(), vendor.getStatus()))
+                .data(new VendorOnboardResponse(vendor.getId().toString(), vendor.getName(), vendor.getStatus()))
                 .build();
     }
 
@@ -54,7 +54,7 @@ public class AdminService {
             return List.of();
         }
         log.info("Vendor found with name {}", vendorName);
-        return VendorSearchResponseDto.buildVendorDtoListFromVendorList(vendorList);
+        return VendorSearchResponse.buildVendorDtoListFromVendorList(vendorList);
 
 
     }
@@ -78,10 +78,10 @@ public class AdminService {
     }
 
     private void validateVendorUpdateRequest(String vendorId, VendorStatus vendorStatus) {
-        if (vendorId == null || vendorId.isEmpty()) {
+        if (StringUtils.isEmpty(vendorId)) {
             throw new InvalidVendorRequest("Vendor id cannot be empty");
         }
-        if (vendorStatus == null) {
+        if (vendorStatus == null || StringUtils.isEmpty(vendorStatus.name())) {
             throw new InvalidVendorRequest("Vendor status cannot be empty");
         }
     }
