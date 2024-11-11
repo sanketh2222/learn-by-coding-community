@@ -1,4 +1,4 @@
-package org.lbcc.bms.bms_monolith.admin.exception;
+package org.lbcc.bms.bms_monolith.admin.exceptions;
 
 public class InvalidVendorRequest extends RuntimeException {
 

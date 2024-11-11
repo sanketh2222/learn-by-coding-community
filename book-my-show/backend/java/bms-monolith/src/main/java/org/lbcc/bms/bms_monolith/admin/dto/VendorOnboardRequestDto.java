@@ -3,6 +3,7 @@ package org.lbcc.bms.bms_monolith.admin.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
@@ -14,12 +15,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class VendorOnboardRequestDto {
 
     @NotBlank(message = "Vendor name is required")
+    @Size(max = 30, message = "Vendor name must be at most 30 characters")
     private String name;
 
     @NotBlank(message = "Contact is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid contact number. Please provide a 10 digit number.")
     private String contactNumber;
 
     @NotBlank(message = "Email is required")
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid email format. Please provide a valid email.")
     private String email;
 
     @NotBlank(message = "Address is required")

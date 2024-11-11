@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class VendorSearchResponseDto {
-    private List<VendorDto> vendorsLst;
+    private List<VendorDto> vendorDtoList;
 
     public static VendorDto buildVendorDtoFromVendor(Vendor vendor) {
         VendorDto vendorDto = new VendorDto();

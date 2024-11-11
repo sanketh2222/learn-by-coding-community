@@ -1,8 +1,8 @@
-package org.lbcc.bms.bms_monolith.admin.exception;
+package org.lbcc.bms.bms_monolith.admin.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.lbcc.bms.bms_monolith.admin.controller.AdminVendorOnboardingController;
-import org.lbcc.bms.bms_monolith.common.constants.BMSConstants;
+import org.lbcc.bms.bms_monolith.admin.constants.BMSConstants;
 import org.lbcc.bms.bms_monolith.common.exception.GlobalExceptionHandler;
 import org.lbcc.bms.bms_monolith.common.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;

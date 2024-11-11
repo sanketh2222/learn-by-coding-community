@@ -1,6 +1,7 @@
 package org.lbcc.bms.bms_monolith.admin.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
@@ -8,10 +9,9 @@ import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
-import org.lbcc.bms.bms_monolith.admin.exception.InvalidVendorRequest;
-import org.lbcc.bms.bms_monolith.admin.exception.VendorNotFoundException;
+import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
+import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,6 @@ public class AdminService {
 
     private final VendorRepository vendorRepository;
 
-    @Autowired
     public AdminService(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
     }
@@ -43,26 +42,20 @@ public class AdminService {
                 .build();
     }
 
-    public ApiResponse<VendorSearchResponseDto> searchVendor(String vendorName) {
-        if (vendorName == null || vendorName.isEmpty()) {
+    public List<VendorDto> searchVendor(String vendorName) {
+        if (StringUtils.isEmpty(vendorName)) {
             throw new InvalidVendorRequest("Vendor name cannot be empty");
         }
+
         log.info("Searching for vendor with name {}", vendorName);
         List<Vendor> vendorList = vendorRepository.findByNameContaining(vendorName);
         if (vendorList.isEmpty()) {
             log.info("No vendor found with name {}", vendorName);
-            return ApiResponse.<VendorSearchResponseDto>builder()
-                    .success(false)
-                    .message("No vendor found with given name")
-                    .build();
+            return List.of();
         }
         log.info("Vendor found with name {}", vendorName);
-        List<VendorDto> vendorDtos = VendorSearchResponseDto.buildVendorDtoListFromVendorList(vendorList);
-        return ApiResponse.<VendorSearchResponseDto>builder()
-                .success(true)
-                .message("Vendor found successfully")
-                .data(new VendorSearchResponseDto(vendorDtos))
-                .build();
+        return VendorSearchResponseDto.buildVendorDtoListFromVendorList(vendorList);
+
 
     }
 

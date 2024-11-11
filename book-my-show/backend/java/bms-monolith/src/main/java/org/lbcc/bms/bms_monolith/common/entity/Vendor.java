@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 
+import lombok.experimental.SuperBuilder;
 import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
 
 import lombok.Getter;
@@ -20,7 +21,7 @@ import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 public class Vendor extends BaseAuditingEntity {
 
     private String name;

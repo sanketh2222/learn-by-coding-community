@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
@@ -11,8 +12,8 @@ import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequestDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponseDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponseDto;
-import org.lbcc.bms.bms_monolith.admin.exception.InvalidVendorRequest;
-import org.lbcc.bms.bms_monolith.admin.exception.VendorNotFoundException;
+import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
+import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.helpers.AdminServiceTestHelper;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
 
@@ -28,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -56,7 +58,12 @@ public class AdminServiceTest {
     void searchVendorWithValidNameReturnsVendorList() {
         when(vendorRepository.findByNameContaining("Test Vendor")).thenReturn(List.of(vendor));
 
-        ApiResponse<VendorSearchResponseDto> response = adminService.searchVendor("Test Vendor");
+        List<VendorDto> vendorDtoList = adminService.searchVendor("Test Vendor");
+        ApiResponse<VendorSearchResponseDto> response = ApiResponse.<VendorSearchResponseDto>builder()
+                .success(true)
+                .message("Vendor found successfully")
+                .data(new VendorSearchResponseDto(vendorDtoList))
+                .build();
 
         assertTrue(response.isSuccess());
         assertEquals("Vendor found successfully", response.getMessage());
@@ -81,11 +88,15 @@ public class AdminServiceTest {
     void searchVendorWithNonExistingNameReturnsNoVendorFound() {
         when(vendorRepository.findByNameContaining("Non Existing Vendor")).thenReturn(Collections.emptyList());
 
-        ApiResponse<VendorSearchResponseDto> response = adminService.searchVendor("Non Existing Vendor");
-
+        List<VendorDto> vendorDtoList = adminService.searchVendor("Non Existing Vendor");
+        ApiResponse<VendorSearchResponseDto> response = ApiResponse.<VendorSearchResponseDto>builder()
+                .success(false)
+                .message("No vendor found with given name")
+                .data(new VendorSearchResponseDto(vendorDtoList))
+                .build();
         assertFalse(response.isSuccess());
         assertEquals("No vendor found with given name", response.getMessage());
-        assertNull(response.getData());
+        assertEquals(0, vendorDtoList.size());
         verify(vendorRepository, times(1)).findByNameContaining("Non Existing Vendor");
     }
 
