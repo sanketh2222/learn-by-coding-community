@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
 @ControllerAdvice(assignableTypes = {AdminVendorOnboardingController.class})
-public class VendorExceptionHandler {
+public class AdminExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class, RuntimeException.class})
     public ResponseEntity<ApiErrorResponse> handleEventServiceException(Exception ex) {
         log.error("Exception occurred in vendor operation ", ex);
-        return GlobalExceptionHandler.buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), BMSConstants.EVENT_SERVICE_ERROR);
+        return GlobalExceptionHandler.buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), BMSConstants.VENDOR_SERVICE_ERROR);
     }
 
     @ExceptionHandler(VendorNotFoundException.class)

@@ -2,6 +2,7 @@ package org.lbcc.bms.bms_monolith.admin.repository;
 
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface VendorRepository extends JpaRepository<Vendor, UUID> {
+public interface VendorRepository extends JpaRepository<Vendor, UUID> , JpaSpecificationExecutor<Vendor> {
 
     //TODO: need to add indexing for name based search
     List<Vendor> findByName(String vendorName);

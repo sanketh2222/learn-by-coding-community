@@ -2,18 +2,16 @@ package org.lbcc.bms.bms_monolith.admin.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.lbcc.bms.bms_monolith.admin.dto.*;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponse;
 import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
 import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,8 +71,15 @@ public class AdminService {
                 .build();
     }
 
-    public Page<Vendor> getAllVendors(Pageable pageable) {
-        return vendorRepository.findAll(pageable);
+    public Page<Vendor> searchVendors(VendorSearchRequest searchRequest, Pageable pageable) {
+        try {
+            Specification<Vendor> spec = VendorSpecifications.createSpecification(searchRequest);
+            return searchRequest.hasSearchCriteria() ? vendorRepository.findAll(spec, pageable)
+                    : vendorRepository.findAll(pageable);
+        } catch (Exception e) {
+            log.error("Error in searching vendors", e);
+            return Page.empty();
+        }
     }
 
     private void validateVendorUpdateRequest(String vendorId, VendorStatus vendorStatus) {
