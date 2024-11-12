@@ -2,7 +2,6 @@ package org.lbcc.bms.bms_monolith.common.exception;
 
 import org.lbcc.bms.bms_monolith.common.constants.BMSConstants;
 import org.lbcc.bms.bms_monolith.common.response.ApiErrorResponse;
-import org.lbcc.bms.bms_monolith.eventservice.exception.EventServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

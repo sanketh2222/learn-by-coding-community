@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.lbcc.bms.bms_monolith.common.entity.BaseAuditingEntity;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 
 @Entity

@@ -1,9 +1,11 @@
 package org.lbcc.bms.bms_monolith.eventservice.dto;
 
+import lombok.Getter;
 import org.lbcc.bms.bms_monolith.common.entity.SeatInShow;
 
 import java.util.UUID;
 
+@Getter
 public class SeatInShowResponse {
 
     private UUID seatTypeInShowId;

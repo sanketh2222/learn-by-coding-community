@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
+@SuperBuilder
 public class Event extends BaseAuditingEntity {
 
     @Size(min=10, max=50, message = "Title must be between 10 and 50 characters.")

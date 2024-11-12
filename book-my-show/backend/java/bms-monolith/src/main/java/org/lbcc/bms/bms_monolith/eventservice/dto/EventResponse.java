@@ -1,11 +1,14 @@
 package org.lbcc.bms.bms_monolith.eventservice.dto;
 
+import lombok.Builder;
+import lombok.Getter;
 import org.lbcc.bms.bms_monolith.common.entity.Event;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Getter
+@Builder
 public class EventResponse {
 
     private String title;
@@ -18,22 +21,6 @@ public class EventResponse {
     private String endDate;
     private String thumbnailUrl;
 
-    // Constructors, Getters, and Setters
-
-    public EventResponse(String title, String description, String vendorName, String venueName,
-                         List<EventShowResponse> shows, String eventTypeName, String startDate,
-                         String endDate, String thumbnailUrl) {
-        this.title = title;
-        this.description = description;
-        this.vendorName = vendorName;
-        this.venueName = venueName;
-        this.shows = shows;
-        this.eventTypeName = eventTypeName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
     public static EventResponse fromEntity(Event event) {
         return new EventResponse(
                 event.getTitle(),
@@ -42,10 +29,10 @@ public class EventResponse {
                 event.getVenue() != null ? event.getVenue().getName() : null,
                 event.getShow() != null ? event.getShow().stream()
                         .map(EventShowResponse::fromEntity)
-                        .collect(Collectors.toList()) : null,
+                        .toList() : null,
                 event.getEventType() != null ? event.getEventType().getLabel() : null,
-                event.getStartDate().toString(),
-                event.getEndDate().toString(),
+                event.getStartDate() != null ? event.getStartDate().toString() : null,
+                event.getEndDate() != null ? event.getEndDate().toString() : null,
                 event.getThumbnailUrl()
         );
     }

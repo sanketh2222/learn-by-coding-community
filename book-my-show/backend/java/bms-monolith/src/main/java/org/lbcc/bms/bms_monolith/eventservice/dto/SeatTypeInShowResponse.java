@@ -1,17 +1,17 @@
 package org.lbcc.bms.bms_monolith.eventservice.dto;
 
+import lombok.Getter;
 import org.lbcc.bms.bms_monolith.common.entity.SeatTypeInShow;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Getter
 public class SeatTypeInShowResponse {
 
     private UUID seatTypeId;
-    private String seatTypeName;  // Optional, if you want to include the seat type name
+    private String seatTypeName;
     private BigDecimal price;
-
-    // Constructors, Getters, and Setters
 
     public SeatTypeInShowResponse(UUID seatTypeId, String seatTypeName, BigDecimal price) {
         this.seatTypeId = seatTypeId;
@@ -19,7 +19,6 @@ public class SeatTypeInShowResponse {
         this.price = price;
     }
 
-    // Static factory method for conversion from SeatTypeInShow entity to SeatTypeInShowResponse DTO
     public static SeatTypeInShowResponse fromEntity(SeatTypeInShow seatTypeInShow) {
         return new SeatTypeInShowResponse(
                 seatTypeInShow.getSeatType() != null ? seatTypeInShow.getSeatType().getId() : null,
