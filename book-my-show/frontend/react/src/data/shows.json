@@ -1,0 +1,25 @@
+{
+  "shows": [
+    {
+      "id": "s1",
+      "movieId": "1",
+      "time": "10:30 AM",
+      "price": 200,
+      "seatsAvailable": 100
+    },
+    {
+      "id": "s2",
+      "movieId": "1",
+      "time": "1:45 PM",
+      "price": 250,
+      "seatsAvailable": 80
+    },
+    {
+      "id": "s3",
+      "movieId": "1",
+      "time": "6:30 PM",
+      "price": 300,
+      "seatsAvailable": 120
+    }
+  ]
+}
