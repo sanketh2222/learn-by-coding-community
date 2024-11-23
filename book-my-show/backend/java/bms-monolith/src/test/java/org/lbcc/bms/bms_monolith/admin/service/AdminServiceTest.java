@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
+import org.lbcc.bms.bms_monolith.common.dto.AddressDto;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
@@ -48,9 +49,11 @@ public class AdminServiceTest {
 
     @BeforeEach
     void setUp() {
+        AddressDto addressDto = new AddressDto("123, Sample Street", "Sample City", "Sample State", "123456", "Sample Country");
         vendor = new Vendor();
         vendor.setId(UUID.randomUUID());
         vendor.setName("Test Vendor");
+        vendor.setAddress(AddressDto.addressDtoToAddress(addressDto));
     }
 
     @Test

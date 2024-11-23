@@ -1,11 +1,6 @@
 package org.lbcc.bms.bms_monolith.common.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -26,7 +21,11 @@ import java.util.List;
 public class Venue extends BaseAuditingEntity {
 
     private String name;
-    private String address;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Integer totalSeatingCapacity;

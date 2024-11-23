@@ -1,6 +1,7 @@
 package org.lbcc.bms.bms_monolith.admin.dto;
 
 import lombok.AllArgsConstructor;
+import org.lbcc.bms.bms_monolith.common.dto.AddressDto;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class VendorSearchResponse {
         vendorDto.setName(vendor.getName());
         vendorDto.setContactNumber(vendor.getContactNumber());
         vendorDto.setEmail(vendor.getEmail());
-        vendorDto.setAddress(vendor.getAddress());
+        vendorDto.setAddress(AddressDto.addressToAddressDto(vendor.getAddress()));
         vendorDto.setWebsite(vendor.getWebsite());
         vendorDto.setGstNo(vendor.getGstNo());
         vendorDto.setPanNo(vendor.getPanNo());

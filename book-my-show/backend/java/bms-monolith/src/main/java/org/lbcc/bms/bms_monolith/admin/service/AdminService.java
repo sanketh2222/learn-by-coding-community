@@ -57,6 +57,10 @@ public class AdminService {
 
     }
 
+    public Vendor findById(UUID vendorId) {
+        return vendorRepository.findById(vendorId).orElseThrow(() -> new VendorNotFoundException("Vendor not found"));
+    }
+
     public ApiResponse<String> updatedVendorStatus(String vendorId, VendorStatus vendorStatus) {
         validateVendorUpdateRequest(vendorId, vendorStatus);
         log.info("Suspending vendor with id {}", vendorId);

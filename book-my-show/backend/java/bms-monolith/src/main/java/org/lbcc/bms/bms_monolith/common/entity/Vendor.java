@@ -1,9 +1,6 @@
 package org.lbcc.bms.bms_monolith.common.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import lombok.experimental.SuperBuilder;
@@ -26,7 +23,11 @@ public class Vendor extends BaseAuditingEntity {
     private String name;
     private String contactNumber;
     private String email;
-    private String address;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     private String website;
     private String gstNo;
     private String panNo;

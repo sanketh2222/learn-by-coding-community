@@ -1,12 +1,11 @@
 package org.lbcc.bms.bms_monolith.admin.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.lbcc.bms.bms_monolith.common.dto.AddressDto;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +27,7 @@ public class VendorOnboardRequest {
     private String email;
 
     @NotBlank(message = "Address is required")
-    private String address;
+    private AddressDto address;
 
     @NotBlank(message = "Website is required")
     private String website;
@@ -45,7 +44,7 @@ public class VendorOnboardRequest {
     @Pattern(regexp = "^[0-9]{2}-[0-9]{2}-[0-9]{4}$", message = "Invalid date format. Please use dd-MM-yyyy.")
     private String registrationDate;
 
-    @NotNull(message = "Logo is required")
+//    @NotNull(message = "Logo is required")
     private MultipartFile logoFile;
 
     public static Vendor buildVendorFromDto(VendorOnboardRequest vendorOnboardRequest) {
@@ -53,12 +52,12 @@ public class VendorOnboardRequest {
                 .name(vendorOnboardRequest.getName())
                 .contactNumber(vendorOnboardRequest.getContactNumber())
                 .email(vendorOnboardRequest.getEmail())
-                .address(vendorOnboardRequest.getAddress())
+                .address(AddressDto.addressDtoToAddress(vendorOnboardRequest.getAddress()))
                 .website(vendorOnboardRequest.getWebsite())
                 .gstNo(vendorOnboardRequest.getGstNo())
                 .panNo(vendorOnboardRequest.getPanNo())
                 .registrationDate(vendorOnboardRequest.getRegistrationDate())
-                .logoUrl(vendorOnboardRequest.getLogoFile().getOriginalFilename())
+                .logoUrl("logo-url-logo-url-logo-url-logo-url")
                 .status(VendorStatus.ACTIVE)
                 .build();
     }

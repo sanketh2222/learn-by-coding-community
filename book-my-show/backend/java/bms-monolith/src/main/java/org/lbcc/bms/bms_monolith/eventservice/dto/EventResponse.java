@@ -1,11 +1,14 @@
 package org.lbcc.bms.bms_monolith.eventservice.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.lbcc.bms.bms_monolith.common.entity.Event;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Data
+@AllArgsConstructor
 public class EventResponse {
 
     private String title;
@@ -17,22 +20,6 @@ public class EventResponse {
     private String startDate;
     private String endDate;
     private String thumbnailUrl;
-
-    // Constructors, Getters, and Setters
-
-    public EventResponse(String title, String description, String vendorName, String venueName,
-                         List<EventShowResponse> shows, String eventTypeName, String startDate,
-                         String endDate, String thumbnailUrl) {
-        this.title = title;
-        this.description = description;
-        this.vendorName = vendorName;
-        this.venueName = venueName;
-        this.shows = shows;
-        this.eventTypeName = eventTypeName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.thumbnailUrl = thumbnailUrl;
-    }
 
     public static EventResponse fromEntity(Event event) {
         return new EventResponse(
