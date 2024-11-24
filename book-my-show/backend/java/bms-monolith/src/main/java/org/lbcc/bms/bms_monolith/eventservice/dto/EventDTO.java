@@ -1,13 +1,14 @@
 package org.lbcc.bms.bms_monolith.eventservice.dto;
 
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
 
 @Data
+@Builder
 public class EventDTO {
 
     private String id;
@@ -31,10 +32,6 @@ public class EventDTO {
 
     private Instant startDate;
 
-    private MultipartFile thumbnailFile;
-
     private Instant endDate;
-
-    private List<SeatTypeInShowRequest> seatTypeInShows;
 
 }

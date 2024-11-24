@@ -17,8 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,7 +30,6 @@ public class EventServiceImpl implements IEventService {
     private final EventTypeRepository eventTypeRepository;
     private final SeatTypeRepository seatTypeRepository;
     private final VenueService venueService;
-    private final EventHelpers eventHelpers;
     private final AdminService adminService;
 
     @Autowired
@@ -36,14 +37,12 @@ public class EventServiceImpl implements IEventService {
                             EventTypeRepository eventTypeRepository,
                             SeatTypeRepository seatTypeRepository,
                             VenueService venueService,
-                            AdminService adminService,
-                            EventHelpers eventHelpers) {
+                            AdminService adminService) {
         this.IEventRepository = IEventRepository;
         this.eventTypeRepository = eventTypeRepository;
         this.seatTypeRepository = seatTypeRepository;
         this.venueService = venueService;
         this.adminService = adminService;
-        this.eventHelpers = eventHelpers;
     }
 
     @Override
@@ -68,12 +67,9 @@ public class EventServiceImpl implements IEventService {
         return EventResponse.fromEntity(savedEvent);
     }
 
-    private Event mapEventDTOToEntity(EventDTO eventDTO) {
+    public Event mapEventDTOToEntity(EventDTO eventDTO) {
         Vendor vendor = adminService.findById(UUID.fromString(eventDTO.getVendorId()));
         Venue venue = venueService.getVenueById(eventDTO.getVenueId());
-
-        List<SeatType> seatTypes = seatTypeRepository.findAll(); //TODO: can be cached later
-        eventHelpers.updateSeatData(seatTypes, venue.getSeats());
 
         EventType eventType = eventTypeRepository.findById(UUID.fromString(eventDTO.getEventTypeId()))
                 .orElse(null);
@@ -84,8 +80,10 @@ public class EventServiceImpl implements IEventService {
                 .startDate(eventDTO.getStartDate()).endDate(eventDTO.getEndDate())
                 .build();
 
+        addSeatsData(eventDTO, venue);
+
         List<EventShow> eventShows = eventDTO.getShows().stream()
-                .map(eventHelpers::mapEventShowDTOToEntity)
+                .map(EventHelpers::mapEventShowDTOToEntity)
                 .toList();
 
         eventShows.forEach(show -> show.setEvent(event));
@@ -94,13 +92,17 @@ public class EventServiceImpl implements IEventService {
         return event;
     }
 
+
     @Override
     public EventResponse addShowsToEvent(EventDTO eventDTO) {
         Event event = IEventRepository.findById(UUID.fromString(eventDTO.getId()))
                 .orElseThrow(() -> new EventServiceException("Event not found", new Throwable()));
+        Venue venue = venueService.getVenueById(eventDTO.getVenueId());
+
+        addSeatsData(eventDTO, venue);
 
         List<EventShow> eventShows = eventDTO.getShows().stream()
-                .map(eventHelpers::mapEventShowDTOToEntity)
+                .map(EventHelpers::mapEventShowDTOToEntity)
                 .toList();
 
         eventShows.forEach(show -> show.setEvent(event));
@@ -119,5 +121,19 @@ public class EventServiceImpl implements IEventService {
         List<EventType> savedEventTypes = eventTypeRepository.saveAll(eventTypes);
         log.info("Event types added successfully: {}", savedEventTypes);
         return new EventTypeResponse(EventTypeDto.fromEntities(savedEventTypes));
+    }
+
+
+    //Adds seats data (seatType and available seats) based on venue
+    private void addSeatsData(EventDTO eventDTO, Venue venue) {
+        eventDTO.getShows().forEach(show -> {
+            show.setSeats(venue.getSeats());
+            show.setSeatTypeMap(getSeatTypeMap());
+        });
+    }
+
+    private Map<String, SeatType> getSeatTypeMap() {
+        List<SeatType> seatTypes = seatTypeRepository.findAll(); //TODO: can be cached later
+        return seatTypes.stream().collect(Collectors.toMap(x -> x.getId().toString(), x -> x));
     }
 }

@@ -1,39 +1,26 @@
 package org.lbcc.bms.bms_monolith.eventservice.helpers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.lbcc.bms.bms_monolith.admin.dto.seat.SeatInShowDTO;
 import org.lbcc.bms.bms_monolith.admin.dto.seat.SeatTypeInShowDTO;
-import org.lbcc.bms.bms_monolith.admin.repository.SeatRepository;
 import org.lbcc.bms.bms_monolith.common.entity.*;
 import org.lbcc.bms.bms_monolith.common.enums.BookingStatus;
 import org.lbcc.bms.bms_monolith.eventservice.dto.EventShowDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
 @Slf4j
 public class EventHelpers {
 
-    private final Map<String, SeatType> seatTypeMap = new HashMap<>();
-    private List<Seat> seats;
-
-    public void updateSeatData(List<SeatType> seatTypes, List<Seat> seats) {
-        seatTypes.forEach(seatType -> seatTypeMap.put(seatType.getId().toString(), seatType));
-        this.seats = seats; // seats available are based on venue
-    }
-
-    public EventShow mapEventShowDTOToEntity(EventShowDTO eventShowDTO) {
+    public static EventShow mapEventShowDTOToEntity(EventShowDTO eventShowDTO) {
         EventShow eventShow = EventShow.builder()
                 .genres(eventShowDTO.getGenres())
                 .startDate(eventShowDTO.getStartTime())
                 .endDate(eventShowDTO.getEndTime())
                 .build();
 
-        List<SeatInShow> seatInShows = getSeatInShows();
+        List<SeatInShow> seatInShows = getSeatInShows(eventShowDTO.getSeats());
         seatInShows.forEach(seat -> seat.setShow(eventShow));
         eventShow.setSeatInShows(seatInShows);
 
@@ -41,7 +28,8 @@ public class EventHelpers {
         Map<String, BigDecimal> seatTypePriceMap = eventShowDTO.getSeatTypeInShows().stream()
                 .collect(Collectors.toMap(SeatTypeInShowDTO::getSeatTypeId, SeatTypeInShowDTO::getPrice));
 
-        List<SeatTypeInShow> seatTypesInShow = getSeatTypeInShows(seatTypePriceMap);
+        List<SeatType> seatTypes = getSeatTypes(eventShowDTO.getSeatTypeMap());
+        List<SeatTypeInShow> seatTypesInShow = getSeatTypeInShows(seatTypePriceMap, seatTypes);
         seatInShows.forEach(seat -> seat.setSeatTypeInShow(getSeatTypeId(seat, seatTypesInShow)));
         seatTypesInShow.forEach(seatType -> seatType.setShow(eventShow));
         eventShow.setSeatTypeInShows(seatTypesInShow);
@@ -49,23 +37,23 @@ public class EventHelpers {
         return eventShow;
     }
 
-    private List<SeatInShow> getSeatInShows() {
+    private static List<SeatInShow> getSeatInShows(List<Seat> seats) {
         return seats.stream()
                 .map(EventHelpers::createSeatInShow)
                 .collect(Collectors.toList());
     }
 
-    private List<SeatType> getSeatTypes() {
+    private static List<SeatType> getSeatTypes(Map<String, SeatType> seatTypeMap) {
         return new ArrayList<>(seatTypeMap.values());
     }
 
-    private List<SeatTypeInShow> getSeatTypeInShows(Map<String, BigDecimal> seatTypePriceMap) {
-        return getSeatTypes().stream()
+    private static List<SeatTypeInShow> getSeatTypeInShows(Map<String, BigDecimal> seatTypePriceMap, List<SeatType> seatTypes) {
+        return seatTypes.stream()
                 .map(seatType -> createSeatTypeInShow(seatTypePriceMap, seatType))
                 .collect(Collectors.toList());
     }
 
-    private SeatTypeInShow getSeatTypeId(SeatInShow seat, List<SeatTypeInShow> seatTypeInShows) {
+    private static SeatTypeInShow getSeatTypeId(SeatInShow seat, List<SeatTypeInShow> seatTypeInShows) {
         return seatTypeInShows.stream()
                 .filter(seatType -> seatType.getSeatType().getId().equals(seat.getSeat().getSeatType().getId()))
                 .findFirst()
@@ -73,7 +61,7 @@ public class EventHelpers {
     }
 
     //creation methods
-    private SeatTypeInShow createSeatTypeInShow(Map<String, BigDecimal> seatTypePriceMap, SeatType seatType) {
+    private static SeatTypeInShow createSeatTypeInShow(Map<String, BigDecimal> seatTypePriceMap, SeatType seatType) {
         return SeatTypeInShow.builder()
                 .seatType(seatType)
                 .price(seatTypePriceMap.getOrDefault(seatType.getId().toString(), seatType.getPrice()))

@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
-import jakarta.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,10 +34,10 @@ public class EventShow extends BaseAuditingEntity {
     @Enumerated(EnumType.STRING)
     private List<Genre> genres;
 
-    @NotNull
+    @Column(nullable = false)
     private Instant startDate;
 
-    @NotNull
+    @Column(nullable = false)
     private Instant endDate;
 
     @ManyToOne

@@ -57,6 +57,7 @@ public class AdminService {
 
     }
 
+    //TODO: change this method to name to findVendorById
     public Vendor findById(UUID vendorId) {
         return vendorRepository.findById(vendorId).orElseThrow(() -> new VendorNotFoundException("Vendor not found"));
     }
@@ -64,7 +65,7 @@ public class AdminService {
     public ApiResponse<String> updatedVendorStatus(String vendorId, VendorStatus vendorStatus) {
         validateVendorUpdateRequest(vendorId, vendorStatus);
         log.info("Suspending vendor with id {}", vendorId);
-        Vendor vendor = vendorRepository.findById(UUID.fromString(vendorId)).orElseThrow(() -> new VendorNotFoundException("Vendor not found"));
+        Vendor vendor = findById(UUID.fromString(vendorId));
         vendor.setStatus(vendorStatus);
         vendorRepository.save(vendor);
         log.info("Vendor id {}  suspended successfully", vendorId);
