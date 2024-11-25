@@ -30,6 +30,6 @@ public class AdminExceptionHandler {
     @ExceptionHandler(InvalidRequest.class)
     public ResponseEntity<ApiErrorResponse> handleInvalidVendorRequest(InvalidRequest ex) {
         log.error("Invalid vendor request ", ex);
-        return GlobalExceptionHandler.buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), BMSConstants.INVALID_VENDOR_REQUEST);
+        return GlobalExceptionHandler.buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), BMSConstants.INVALID_REQUEST);
     }
 }

@@ -113,11 +113,10 @@ public class AdminServiceTest {
 
         when(vendorRepository.findById(vendorId)).thenReturn(Optional.of(vendor));
 
-        ApiResponse<String> response = adminService.updatedVendorStatus(vendorId.toString(), VendorStatus.SUSPENDED);
+        Vendor updatedVendor = adminService.updatedVendorStatus(vendorId.toString(), VendorStatus.SUSPENDED);
 
-        assertTrue(response.isSuccess());
-        assertEquals("Vendor status updated successfully", response.getMessage());
-        assertEquals(vendorId.toString(), response.getData());
+        assertEquals(vendorId, updatedVendor.getId());
+        assertEquals(VendorStatus.SUSPENDED, updatedVendor.getStatus());
         verify(vendorRepository, times(1)).findById(vendorId);
         verify(vendorRepository, times(1)).save(vendor);
     }
@@ -162,12 +161,9 @@ public class AdminServiceTest {
 
         when(vendorRepository.save(any(Vendor.class))).thenReturn(vendor);
 
-        ApiResponse<VendorOnboardResponse> response = adminService.onboardNewVendor(requestDto);
+        VendorOnboardResponse response = adminService.onboardNewVendor(requestDto);
 
-        assertTrue(response.isSuccess());
-        assertEquals("Vendor onboarded successfully", response.getMessage());
-        assertNotNull(response.getData());
-        assertEquals(vendor.getId().toString(), response.getData().getVendorId());
+        assertEquals(vendor.getId().toString(), response.getVendorId());
         verify(vendorRepository, times(1)).save(any(Vendor.class));
     }
 

@@ -27,17 +27,13 @@ public class AdminService {
         this.vendorRepository = vendorRepository;
     }
 
-    public ApiResponse<VendorOnboardResponse> onboardNewVendor(VendorOnboardRequest vendorOnboardRequest) {
+    public VendorOnboardResponse onboardNewVendor(VendorOnboardRequest vendorOnboardRequest) {
         log.info("Onboarding new vendor {}", vendorOnboardRequest.getName());
         //TODO: will save the logoFile to file storage like s3 and get the URL and then update the vendor object before saving
         Vendor vendor = vendorRepository.save(VendorOnboardRequest.buildVendorFromDto(vendorOnboardRequest));
         log.info("Vendor onboarded successfully with id {}", vendor.getId());
 
-        return ApiResponse.<VendorOnboardResponse>builder()
-                .success(true)
-                .message("Vendor onboarded successfully")
-                .data(new VendorOnboardResponse(vendor.getId().toString(), vendor.getName(), vendor.getStatus()))
-                .build();
+        return new VendorOnboardResponse(vendor.getId().toString(), vendor.getName(), vendor.getStatus());
     }
 
     public List<VendorDto> searchVendor(String vendorName) {
@@ -47,12 +43,9 @@ public class AdminService {
 
         log.info("Searching for vendor with name {}", vendorName);
         List<Vendor> vendorList = vendorRepository.findByNameContaining(vendorName);
-        if (vendorList.isEmpty()) {
-            log.info("No vendor found with name {}", vendorName);
-            return List.of();
-        }
-        log.info("Vendor found with name {}", vendorName);
-        return VendorSearchResponse.buildVendorDtoListFromVendorList(vendorList);
+        log.info("total vendors found {}", vendorList.size());
+        return vendorList.isEmpty() ? List.of() :
+                VendorSearchResponse.buildVendorDtoListFromVendorList(vendorList);
 
 
     }
@@ -64,18 +57,14 @@ public class AdminService {
         return vendorRepository.findById(vendorId).orElseThrow(() -> new VendorNotFoundException("Vendor not found"));
     }
 
-    public ApiResponse<String> updatedVendorStatus(String vendorId, VendorStatus vendorStatus) {
+    public Vendor updatedVendorStatus(String vendorId, VendorStatus vendorStatus) {
         validateVendorUpdateRequest(vendorId, vendorStatus);
-        log.info("Suspending vendor with id {}", vendorId);
+        log.info("updating vendor with id {} to {} ", vendorId, vendorStatus);
         Vendor vendor = findVendorById(UUID.fromString(vendorId));
         vendor.setStatus(vendorStatus);
         vendorRepository.save(vendor);
         log.info("Vendor id {}  suspended successfully", vendorId);
-        return ApiResponse.<String>builder()
-                .success(true)
-                .message("Vendor status updated successfully")
-                .data(vendorId)
-                .build();
+        return vendor;
     }
 
     public Page<Vendor> searchVendors(VendorSearchRequest searchRequest, Pageable pageable) {

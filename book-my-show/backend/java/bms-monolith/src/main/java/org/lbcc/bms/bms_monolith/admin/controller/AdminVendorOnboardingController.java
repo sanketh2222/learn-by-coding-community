@@ -33,12 +33,24 @@ public class AdminVendorOnboardingController {
 
     @PostMapping("/onboard")
     public ResponseEntity<ApiResponse<VendorOnboardResponse>> onboardNewVendor(@RequestBody VendorOnboardRequest vendorOnboardRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adminService.onboardNewVendor(vendorOnboardRequest));
+        VendorOnboardResponse response = adminService.onboardNewVendor(vendorOnboardRequest);
+        ApiResponse<VendorOnboardResponse> apiResponse = ApiResponse.<VendorOnboardResponse>builder()
+                .success(true)
+                .message(BMSConstants.VENDOR_SUCCESS_MESSAGE)
+                .data(response)
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
     @PutMapping("/{vendorId}/{status}")
     public ResponseEntity<ApiResponse<String>> updateVendorStatus(@PathVariable String vendorId, @PathVariable VendorStatus status) {
-        return ResponseEntity.ok(adminService.updatedVendorStatus(vendorId, status));
+        Vendor vendor = adminService.updatedVendorStatus(vendorId, status);
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .success(true)
+                .message(BMSConstants.VENDOR_UPDATE_SUCCESS_MESSAGE)
+                .data(vendor.getId().toString())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

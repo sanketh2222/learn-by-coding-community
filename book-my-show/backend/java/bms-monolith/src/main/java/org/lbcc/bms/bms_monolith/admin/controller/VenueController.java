@@ -1,8 +1,10 @@
 package org.lbcc.bms.bms_monolith.admin.controller;
 
+import org.lbcc.bms.bms_monolith.admin.dto.venue.VenueAddSeatsRequest;
 import org.lbcc.bms.bms_monolith.admin.dto.venue.VenueDto;
 import org.lbcc.bms.bms_monolith.admin.dto.venue.VenueOnboardResponse;
 import org.lbcc.bms.bms_monolith.admin.service.VenueService;
+import org.lbcc.bms.bms_monolith.common.entity.Venue;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +32,11 @@ public class VenueController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    //add seats
+    //add seats to venue
     @PostMapping("/seats")
-    public ResponseEntity<?> addSeatsToVenue(@RequestBody VenueDto venueDto) {
-        VenueOnboardResponse response = venueService.createVenue(venueDto);
-        ApiResponse<VenueOnboardResponse> apiResponse = ApiResponse.<VenueOnboardResponse>builder()
+    public ResponseEntity<?> addSeatsToVenue(@RequestBody VenueAddSeatsRequest request) {
+        Venue response = venueService.addSeatsToVenue(request.getVenueId(), request.getSeatDtos());
+        ApiResponse<Venue> apiResponse = ApiResponse.<Venue>builder()
                 .success(true).message("Seats added successfully")
                 .data(response).build();
         return ResponseEntity.ok(apiResponse);
