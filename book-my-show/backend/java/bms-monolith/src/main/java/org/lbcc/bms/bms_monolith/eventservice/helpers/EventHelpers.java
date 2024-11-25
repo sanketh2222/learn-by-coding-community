@@ -24,17 +24,30 @@ public class EventHelpers {
         seatInShows.forEach(seat -> seat.setShow(eventShow));
         eventShow.setSeatInShows(seatInShows);
 
-        //while onboarding admin can provide price for each seat type based on the show
-        Map<String, BigDecimal> seatTypePriceMap = eventShowDTO.getSeatTypeInShows().stream()
-                .collect(Collectors.toMap(SeatTypeInShowDTO::getSeatTypeId, SeatTypeInShowDTO::getPrice));
-
         List<SeatType> seatTypes = getSeatTypes(eventShowDTO.getSeatTypeMap());
+        Map<String, BigDecimal> seatTypePriceMap = buildSeatTypePriceMap(eventShowDTO, seatTypes);
+
         List<SeatTypeInShow> seatTypesInShow = getSeatTypeInShows(seatTypePriceMap, seatTypes);
         seatInShows.forEach(seat -> seat.setSeatTypeInShow(getSeatTypeId(seat, seatTypesInShow)));
         seatTypesInShow.forEach(seatType -> seatType.setShow(eventShow));
         eventShow.setSeatTypeInShows(seatTypesInShow);
 
         return eventShow;
+    }
+
+    private static Map<String, BigDecimal> buildSeatTypePriceMap(EventShowDTO eventShowDTO, List<SeatType> seatTypes) {
+        Map<String, BigDecimal> seatTypePriceMap = null;
+        //while onboarding shows admin can provide price for each seat type based on the show
+        //price can be altered for each show based on demand and show timings
+        if (eventShowDTO.getSeatTypeInShows() != null) {
+            seatTypePriceMap = eventShowDTO.getSeatTypeInShows().stream()
+                    .collect(Collectors.toMap(SeatTypeInShowDTO::getSeatTypeId, SeatTypeInShowDTO::getPrice));
+        } else {
+            //in case admin does not want to change the price for each show will pick the default price from seat type
+            seatTypePriceMap = seatTypes.stream()
+                    .collect(Collectors.toMap(seatType -> seatType.getId().toString(), SeatType::getPrice));
+        }
+        return seatTypePriceMap;
     }
 
     private static List<SeatInShow> getSeatInShows(List<Seat> seats) {

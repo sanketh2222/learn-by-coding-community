@@ -57,6 +57,9 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public EventResponse hostEvent(EventDTO request) {
+        //TODO: add additional validations to check if timings are correct
+        //Example: adding back dated shows should not be allowed
+        // end date should be greater than start date
         Event event = mapEventDTOToEntity(request);
 
         Event savedEvent = IEventRepository.save(event); //save the event
@@ -84,7 +87,11 @@ public class EventServiceImpl implements IEventService {
                 .toList() : List.of();
 
         eventShows.forEach(show -> show.setEvent(event));
-        event.setShow(eventShows);
+
+        if (!event.getShow().isEmpty()) {
+            log.warn("no shows found in request");
+            event.setShow(eventShows);
+        }
 
         return event;
     }
