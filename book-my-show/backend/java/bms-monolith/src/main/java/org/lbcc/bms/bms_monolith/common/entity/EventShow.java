@@ -1,6 +1,7 @@
 package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -21,13 +22,14 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
+@Table(name = "event_shows")
 @Getter
 @SuperBuilder
 public class EventShow extends BaseAuditingEntity {
 
     @ElementCollection(targetClass = Genre.class)
-    @CollectionTable(name = "show_genre", joinColumns = @JoinColumn(name = "show_id"))
-    @Column(name = "genre")
+    @CollectionTable(name = "show_genres", joinColumns = @JoinColumn(name = "show_id"))
+    @Column(name = "label")
     @Enumerated(EnumType.STRING)
     private List<Genre> genres;
 

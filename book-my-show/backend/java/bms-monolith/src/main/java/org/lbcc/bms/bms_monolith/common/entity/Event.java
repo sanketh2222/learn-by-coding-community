@@ -1,6 +1,7 @@
 package org.lbcc.bms.bms_monolith.common.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
@@ -18,12 +19,12 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
+@Table(name = "events")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @SuperBuilder
 public class Event extends BaseAuditingEntity {
 
-    @Size(min=10, max=50, message = "Title must be between 10 and 50 characters.")
     @Column(nullable = false, length = 50)
     private String title;
 
