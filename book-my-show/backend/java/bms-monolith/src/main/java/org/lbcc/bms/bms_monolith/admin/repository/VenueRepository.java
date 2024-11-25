@@ -9,5 +9,4 @@ import java.util.UUID;
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, UUID> {
 
-    Venue findByName(String name);
 }

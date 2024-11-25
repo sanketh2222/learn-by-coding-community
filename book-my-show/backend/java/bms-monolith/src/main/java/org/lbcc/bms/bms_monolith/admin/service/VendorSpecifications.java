@@ -1,7 +1,6 @@
 package org.lbcc.bms.bms_monolith.admin.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchRequest;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.springframework.data.jpa.domain.Specification;

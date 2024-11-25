@@ -43,6 +43,9 @@ public class VenueService {
     }
 
     public Venue getVenueById(String venueId) {
+        if (venueId == null) {
+            throw new RuntimeException("Venue id cannot be null");
+        }
         return venueRepository.findById(UUID.fromString(venueId)).orElseThrow(() -> new RuntimeException("Venue not found"));
     }
 

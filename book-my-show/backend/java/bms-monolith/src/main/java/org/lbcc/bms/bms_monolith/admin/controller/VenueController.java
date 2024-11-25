@@ -30,9 +30,13 @@ public class VenueController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    @PostMapping("/{venueId}/seat-types")
-
-
-
-    //TODO: update venue
+    //add seats
+    @PostMapping("/seats")
+    public ResponseEntity<?> addSeatsToVenue(@RequestBody VenueDto venueDto) {
+        VenueOnboardResponse response = venueService.createVenue(venueDto);
+        ApiResponse<VenueOnboardResponse> apiResponse = ApiResponse.<VenueOnboardResponse>builder()
+                .success(true).message("Seats added successfully")
+                .data(response).build();
+        return ResponseEntity.ok(apiResponse);
+    }
 }

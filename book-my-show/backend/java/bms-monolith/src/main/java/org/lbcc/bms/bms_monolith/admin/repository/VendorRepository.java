@@ -12,9 +12,6 @@ import java.util.UUID;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, UUID> , JpaSpecificationExecutor<Vendor> {
 
-    //TODO: need to add indexing for name based search
-    List<Vendor> findByName(String vendorName);
-
     List<Vendor> findByNameContaining(String vendorName);
 
     Optional<Vendor> findById(UUID vendorId);

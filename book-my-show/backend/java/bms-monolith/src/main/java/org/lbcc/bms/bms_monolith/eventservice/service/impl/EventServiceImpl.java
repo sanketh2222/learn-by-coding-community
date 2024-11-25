@@ -16,10 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +65,7 @@ public class EventServiceImpl implements IEventService {
     }
 
     public Event mapEventDTOToEntity(EventDTO eventDTO) {
-        Vendor vendor = adminService.findById(UUID.fromString(eventDTO.getVendorId()));
+        Vendor vendor = adminService.findVendorById(UUID.fromString(eventDTO.getVendorId()));
         Venue venue = venueService.getVenueById(eventDTO.getVenueId());
 
         EventType eventType = eventTypeRepository.findById(UUID.fromString(eventDTO.getEventTypeId()))
@@ -82,9 +79,9 @@ public class EventServiceImpl implements IEventService {
 
         addSeatsData(eventDTO, venue);
 
-        List<EventShow> eventShows = eventDTO.getShows().stream()
+        List<EventShow> eventShows = eventDTO.getShows() != null ? eventDTO.getShows().stream()
                 .map(EventHelpers::mapEventShowDTOToEntity)
-                .toList();
+                .toList() : List.of();
 
         eventShows.forEach(show -> show.setEvent(event));
         event.setShow(eventShows);
@@ -101,11 +98,16 @@ public class EventServiceImpl implements IEventService {
 
         addSeatsData(eventDTO, venue);
 
+        if (eventDTO.getShows() == null || eventDTO.getShows().isEmpty()) {
+            throw new EventServiceException("No shows found in request", new Throwable());
+        }
+
         List<EventShow> eventShows = eventDTO.getShows().stream()
                 .map(EventHelpers::mapEventShowDTOToEntity)
                 .toList();
 
         eventShows.forEach(show -> show.setEvent(event));
+        event.setShow(event.getShow() == null ? new ArrayList<>() : event.getShow());
         event.getShow().addAll(eventShows);
 
         Event updatedEvent = IEventRepository.save(event);
@@ -122,7 +124,6 @@ public class EventServiceImpl implements IEventService {
         log.info("Event types added successfully: {}", savedEventTypes);
         return new EventTypeResponse(EventTypeDto.fromEntities(savedEventTypes));
     }
-
 
     //Adds seats data (seatType and available seats) based on venue
     private void addSeatsData(EventDTO eventDTO, Venue venue) {

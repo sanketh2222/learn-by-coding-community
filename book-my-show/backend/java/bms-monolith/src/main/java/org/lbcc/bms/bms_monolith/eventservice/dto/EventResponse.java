@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EventResponse {
 
+    private String id;
     private String title;
     private String description;
     private String vendorName;
@@ -23,6 +24,7 @@ public class EventResponse {
 
     public static EventResponse fromEntity(Event event) {
         return new EventResponse(
+                event.getId().toString(),
                 event.getTitle(),
                 event.getDescription(),
                 event.getVendor() != null ? event.getVendor().getName() : null,

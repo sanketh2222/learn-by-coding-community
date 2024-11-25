@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.lbcc.bms.bms_monolith.admin.dto.VendorDto;
+import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidRequest;
 import org.lbcc.bms.bms_monolith.common.dto.AddressDto;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
@@ -13,7 +14,6 @@ import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchResponse;
-import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
 import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.helpers.AdminServiceTestHelper;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
@@ -75,15 +75,15 @@ public class AdminServiceTest {
     }
 
     @Test
-    @DisplayName("Search vendor with empty name throws InvalidVendorRequest")
+    @DisplayName("Search vendor with empty name throws InvalidRequest")
     void searchVendorWithEmptyNameThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> adminService.searchVendor(""));
+        assertThrows(InvalidRequest.class, () -> adminService.searchVendor(""));
     }
 
     @Test
-    @DisplayName("Search vendor with null name throws InvalidVendorRequest")
+    @DisplayName("Search vendor with null name throws InvalidRequest")
     void searchVendorWithNullNameThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> adminService.searchVendor(null));
+        assertThrows(InvalidRequest.class, () -> adminService.searchVendor(null));
     }
 
     @Test
@@ -123,22 +123,22 @@ public class AdminServiceTest {
     }
 
     @Test
-    @DisplayName("Update vendor status with null id throws InvalidVendorRequest")
+    @DisplayName("Update vendor status with null id throws InvalidRequest")
     void updateVendorStatusWithNullIdThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> adminService.updatedVendorStatus(null, VendorStatus.SUSPENDED));
+        assertThrows(InvalidRequest.class, () -> adminService.updatedVendorStatus(null, VendorStatus.SUSPENDED));
     }
 
     @Test
-    @DisplayName("Update vendor status with empty id throws InvalidVendorRequest")
+    @DisplayName("Update vendor status with empty id throws InvalidRequest")
     void updateVendorStatusWithEmptyIdThrowsInvalidVendorRequest() {
-        assertThrows(InvalidVendorRequest.class, () -> adminService.updatedVendorStatus("", VendorStatus.SUSPENDED));
+        assertThrows(InvalidRequest.class, () -> adminService.updatedVendorStatus("", VendorStatus.SUSPENDED));
     }
 
     @Test
-    @DisplayName("Update vendor status with null status throws InvalidVendorRequest")
+    @DisplayName("Update vendor status with null status throws InvalidRequest")
     void updateVendorStatusWithNullStatusThrowsInvalidVendorRequest() {
         UUID vendorId = UUID.randomUUID();
-        assertThrows(InvalidVendorRequest.class, () -> adminService.updatedVendorStatus(vendorId.toString(), null));
+        assertThrows(InvalidRequest.class, () -> adminService.updatedVendorStatus(vendorId.toString(), null));
     }
 
     @Test

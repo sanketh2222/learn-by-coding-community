@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardRequest;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
-import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
+import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidRequest;
 import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.service.AdminService;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
@@ -66,9 +66,9 @@ public class AdminVendorOnboardingControllerTest {
         String vendorId = "";
         VendorStatus status = VendorStatus.ACTIVE;
 
-        when(adminService.updatedVendorStatus(vendorId, status)).thenThrow(new InvalidVendorRequest("Vendor id cannot be empty"));
+        when(adminService.updatedVendorStatus(vendorId, status)).thenThrow(new InvalidRequest("Vendor id cannot be empty"));
 
-        assertThrows(InvalidVendorRequest.class, () -> {
+        assertThrows(InvalidRequest.class, () -> {
             controller.updateVendorStatus(vendorId, status);
         });
     }
@@ -103,9 +103,9 @@ public class AdminVendorOnboardingControllerTest {
                 .contactNumber("1234567890")
                 .email("test@gmail.com").build();
 
-        when(adminService.onboardNewVendor(request)).thenThrow(new InvalidVendorRequest("Invalid request"));
+        when(adminService.onboardNewVendor(request)).thenThrow(new InvalidRequest("Invalid request"));
 
-        assertThrows(InvalidVendorRequest.class, () -> {
+        assertThrows(InvalidRequest.class, () -> {
             controller.onboardNewVendor(request);
         });
     }

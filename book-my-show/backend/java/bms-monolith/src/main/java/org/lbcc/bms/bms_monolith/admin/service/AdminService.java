@@ -3,10 +3,10 @@ package org.lbcc.bms.bms_monolith.admin.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.lbcc.bms.bms_monolith.admin.dto.*;
+import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidRequest;
 import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
-import org.lbcc.bms.bms_monolith.admin.exceptions.InvalidVendorRequest;
 import org.lbcc.bms.bms_monolith.admin.exceptions.VendorNotFoundException;
 import org.lbcc.bms.bms_monolith.admin.repository.VendorRepository;
 import org.springframework.data.domain.Page;
@@ -42,7 +42,7 @@ public class AdminService {
 
     public List<VendorDto> searchVendor(String vendorName) {
         if (StringUtils.isEmpty(vendorName)) {
-            throw new InvalidVendorRequest("Vendor name cannot be empty");
+            throw new InvalidRequest("Vendor name cannot be empty");
         }
 
         log.info("Searching for vendor with name {}", vendorName);
@@ -57,15 +57,17 @@ public class AdminService {
 
     }
 
-    //TODO: change this method to name to findVendorById
-    public Vendor findById(UUID vendorId) {
+    public Vendor findVendorById(UUID vendorId) {
+        if (vendorId == null) {
+            throw new InvalidRequest("Vendor id cannot be empty");
+        }
         return vendorRepository.findById(vendorId).orElseThrow(() -> new VendorNotFoundException("Vendor not found"));
     }
 
     public ApiResponse<String> updatedVendorStatus(String vendorId, VendorStatus vendorStatus) {
         validateVendorUpdateRequest(vendorId, vendorStatus);
         log.info("Suspending vendor with id {}", vendorId);
-        Vendor vendor = findById(UUID.fromString(vendorId));
+        Vendor vendor = findVendorById(UUID.fromString(vendorId));
         vendor.setStatus(vendorStatus);
         vendorRepository.save(vendor);
         log.info("Vendor id {}  suspended successfully", vendorId);
@@ -89,10 +91,10 @@ public class AdminService {
 
     private void validateVendorUpdateRequest(String vendorId, VendorStatus vendorStatus) {
         if (StringUtils.isEmpty(vendorId)) {
-            throw new InvalidVendorRequest("Vendor id cannot be empty");
+            throw new InvalidRequest("Vendor id cannot be empty");
         }
         if (vendorStatus == null || StringUtils.isEmpty(vendorStatus.name())) {
-            throw new InvalidVendorRequest("Vendor status cannot be empty");
+            throw new InvalidRequest("Vendor status cannot be empty");
         }
     }
 }
