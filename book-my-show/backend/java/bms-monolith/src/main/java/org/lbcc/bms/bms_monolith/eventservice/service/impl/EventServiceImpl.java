@@ -6,6 +6,8 @@ import org.lbcc.bms.bms_monolith.admin.service.AdminService;
 import org.lbcc.bms.bms_monolith.admin.service.VenueService;
 import org.lbcc.bms.bms_monolith.common.entity.*;
 import org.lbcc.bms.bms_monolith.eventservice.dto.*;
+import org.lbcc.bms.bms_monolith.common.entity.Event;
+import org.lbcc.bms.bms_monolith.eventservice.dto.EventResponse;
 import org.lbcc.bms.bms_monolith.eventservice.exception.EventServiceException;
 import org.lbcc.bms.bms_monolith.eventservice.helpers.EventHelpers;
 import org.lbcc.bms.bms_monolith.eventservice.repository.EventTypeRepository;
@@ -35,6 +37,7 @@ public class EventServiceImpl implements IEventService {
                             SeatTypeRepository seatTypeRepository,
                             VenueService venueService,
                             AdminService adminService) {
+    public EventServiceImpl(IEventRepository IEventRepository) {
         this.IEventRepository = IEventRepository;
         this.eventTypeRepository = eventTypeRepository;
         this.seatTypeRepository = seatTypeRepository;
@@ -43,12 +46,12 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public Page<Event> getAllEvents(Pageable pageable) {
+    public Page<EventResponse> getAllEvents(Pageable pageable) {
         try {
-            Page<Event> eventsPage = IEventRepository.findAllWithDetails(pageable);
+            Page<Event> eventsPage = IEventRepository.findAll(pageable);
             log.info("Fetched {} events with pageable {}", eventsPage.getTotalElements(), pageable);
 
-            return eventsPage;
+            return eventsPage.map(EventResponse::fromEntity);
         } catch (Exception e) {
             log.error("Error fetching events: {}", e.getMessage());
             throw new EventServiceException("Failed to fetch events", e);

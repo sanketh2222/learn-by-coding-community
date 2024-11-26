@@ -1,0 +1,20 @@
+{
+  "vendors": [
+    {
+      "id": "1",
+      "name": "Awesome Events Co.",
+      "email": "contact@awesome-events.com",
+      "phone": "+1 234 567 8900",
+      "address": "123 Event Street, City",
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "name": "Premium Shows Ltd.",
+      "email": "info@premium-shows.com",
+      "phone": "+1 234 567 8901",
+      "address": "456 Show Avenue, Town",
+      "status": "active"
+    }
+  ]
+}

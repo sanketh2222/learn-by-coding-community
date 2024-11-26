@@ -2,14 +2,18 @@ package org.lbcc.bms.bms_monolith.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.lbcc.bms.bms_monolith.common.response.ApiListResponse;
 import org.lbcc.bms.bms_monolith.common.entity.Event;
 import org.lbcc.bms.bms_monolith.eventservice.controller.EventController;
+import org.lbcc.bms.bms_monolith.eventservice.dto.EventResponse;
 import org.lbcc.bms.bms_monolith.eventservice.exception.EventServiceException;
 import org.lbcc.bms.bms_monolith.eventservice.service.IEventService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +28,8 @@ import java.util.List;
 import java.util.UUID;
 import static org.mockito.Mockito.when;
 
-public class EventControllerTest {
+@ExtendWith(MockitoExtension.class)
+class EventControllerTest {
 
     @Mock
     private IEventService eventService;
@@ -32,24 +37,19 @@ public class EventControllerTest {
     @InjectMocks
     private EventController eventController;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void testGetAllEventsSuccess() {
         Event event = new Event();
         event.setId(UUID.randomUUID());
         event.setTitle("Sample Event");
-
-        Page<Event> eventPage = new PageImpl<>(List.of(event), PageRequest.of(0, 10), 1);
+        Pageable defaultPage = PageRequest.of(0, 10);
+        Page<EventResponse> eventPage = new PageImpl<>(List.of(EventResponse.fromEntity(event)), defaultPage, 1);
 
         when(eventService.getAllEvents(any(Pageable.class))).thenReturn(eventPage);
 
-        ResponseEntity<ApiListResponse<Event>> response = eventController.getAllEvents(PageRequest.of(0, 10));
+        ResponseEntity<ApiListResponse<EventResponse>> response = eventController.getAllEvents(defaultPage);
 
-        ApiListResponse<Event> expectedResponse = ApiListResponse.<Event>builder()
+        ApiListResponse<EventResponse> expectedResponse = ApiListResponse.<EventResponse>builder()
                 .success(true)
                 .message("Events fetched successfully")
                 .data(eventPage.getContent())
@@ -70,23 +70,11 @@ public class EventControllerTest {
 
     @Test
     void testGetAllEventsInvalidPageParameters() {
-        Page<Event> emptyPage = Page.empty(PageRequest.of(0, 10));
+        Page<EventResponse> emptyPage = Page.empty(PageRequest.of(0, 10));
 
         when(eventService.getAllEvents(PageRequest.of(0, 10))).thenReturn(emptyPage);
 
-        ResponseEntity<ApiListResponse<Event>> response = eventController.getAllEvents(PageRequest.of(0, 10));
-
-        ApiListResponse<Event> expectedResponse = ApiListResponse.<Event>builder()
-                .success(false)
-                .message("Invalid page or size parameters")
-                .data(emptyPage.getContent())
-                .totalItems((int) emptyPage.getTotalElements())
-                .totalPages(emptyPage.getTotalPages())
-                .currentPage(0)
-                .pageSize(emptyPage.getSize())
-                .hasNextPage(emptyPage.hasNext())
-                .hasPreviousPage(emptyPage.hasPrevious())
-                .build();
+        ResponseEntity<ApiListResponse<EventResponse>> response = eventController.getAllEvents(PageRequest.of(0, 10));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Events fetched successfully", response.getBody().getMessage());
@@ -97,10 +85,10 @@ public class EventControllerTest {
     void testGetAllEventsExceptionHandling() {
         when(eventService.getAllEvents(any(Pageable.class)))
                 .thenThrow(new EventServiceException("Failed to fetch events", new RuntimeException()));
-
-        EventServiceException exception = assertThrows(EventServiceException.class, () -> {
-            eventController.getAllEvents(PageRequest.of(0, 10));
-        });
+        Pageable pageable = PageRequest.of(0, 10);
+        EventServiceException exception = assertThrows(EventServiceException.class, () ->
+            eventController.getAllEvents(pageable)
+        );
 
         assertEquals("Failed to fetch events", exception.getMessage());
     }

@@ -18,4 +18,5 @@ public interface IEventRepository extends JpaRepository<Event, UUID> {
 
     @Override
     Optional<Event> findById(UUID uuid);
+    Page<Event> findAll(Pageable pageable);
 }

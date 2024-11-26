@@ -1,0 +1,40 @@
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "Dune: Part Two",
+      "poster": "https://images.unsplash.com/photo-1535016120720-40c646be5580?w=800&auto=format&fit=crop",
+      "rating": 8.5,
+      "language": "English",
+      "genre": ["Sci-Fi", "Adventure"],
+      "duration": "2h 46min"
+    },
+    {
+      "id": "2",
+      "title": "Poor Things",
+      "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop",
+      "rating": 8.4,
+      "language": "English",
+      "genre": ["Comedy", "Drama", "Romance"],
+      "duration": "2h 21min"
+    },
+    {
+      "id": "3",
+      "title": "Godzilla x Kong",
+      "poster": "https://images.unsplash.com/photo-1533613220915-609f661a6fe1?w=800&auto=format&fit=crop",
+      "rating": 7.8,
+      "language": "English",
+      "genre": ["Action", "Sci-Fi"],
+      "duration": "1h 55min"
+    },
+    {
+      "id": "4",
+      "title": "Kung Fu Panda 4",
+      "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop",
+      "rating": 7.2,
+      "language": "Hindi",
+      "genre": ["Animation", "Comedy", "Action"],
+      "duration": "1h 34min"
+    }
+  ]
+}
