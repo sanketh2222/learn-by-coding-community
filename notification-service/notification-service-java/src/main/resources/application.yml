@@ -1,0 +1,18 @@
+Spring:
+  application:
+    name: Notification Service
+  datasource:
+    url: jdbc:mysql://localhost:3306/notifications
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  servlet:
+    context-path: /api/v1

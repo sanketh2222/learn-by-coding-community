@@ -4,12 +4,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.lbcc.bms.bms_monolith.common.constants.BMSConstants;
 import org.lbcc.bms.bms_monolith.common.response.ApiListResponse;
-import org.lbcc.bms.bms_monolith.common.entity.Event;
-import org.lbcc.bms.bms_monolith.common.response.ApiResponse;
-import org.lbcc.bms.bms_monolith.eventservice.dto.EventDTO;
 import org.lbcc.bms.bms_monolith.eventservice.dto.EventResponse;
-import org.lbcc.bms.bms_monolith.eventservice.dto.EventTypeRequestDto;
-import org.lbcc.bms.bms_monolith.eventservice.dto.EventTypeResponse;
 import org.lbcc.bms.bms_monolith.eventservice.service.IEventService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,13 +28,13 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiListResponse<Event>> getAllEvents(
-            @PageableDefault(page = 0, size = 10)
+    public ResponseEntity<ApiListResponse<EventResponse>> getAllEvents(
+            @PageableDefault(size = BMSConstants.DEFAULT_PAGE_SIZE)
             @SortDefault(sort = "startDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Event> eventsPage = iEventService.getAllEvents(pageable);
+        Page<EventResponse> eventsPage = iEventService.getAllEvents(pageable);
 
-        ApiListResponse<Event> response = ApiListResponse.<Event>builder()
+        ApiListResponse<EventResponse> response = ApiListResponse.<EventResponse>builder()
                 .success(true)
                 .message(BMSConstants.EVENT_SUCCESS_MESSAGE)
                 .setPage(eventsPage)

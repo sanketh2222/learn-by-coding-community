@@ -7,6 +7,8 @@ import org.lbcc.bms.bms_monolith.admin.service.AdminService;
 import org.lbcc.bms.bms_monolith.admin.service.VenueService;
 import org.lbcc.bms.bms_monolith.common.entity.*;
 import org.lbcc.bms.bms_monolith.eventservice.dto.EventDTO;
+import org.lbcc.bms.bms_monolith.common.entity.Event;
+import org.lbcc.bms.bms_monolith.eventservice.dto.EventResponse;
 import org.lbcc.bms.bms_monolith.eventservice.exception.EventServiceException;
 import org.lbcc.bms.bms_monolith.eventservice.repository.EventTypeRepository;
 import org.lbcc.bms.bms_monolith.eventservice.repository.IEventRepository;
@@ -14,6 +16,7 @@ import org.lbcc.bms.bms_monolith.eventservice.service.impl.EventServiceImpl;
 import org.lbcc.bms.bms_monolith.service.helpers.EventHelpers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EventServiceImplTest {
+class EventServiceImplTest {
 
     @Mock
     private IEventRepository IEventRepository;
@@ -59,9 +62,9 @@ public class EventServiceImplTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Event> eventPage = new PageImpl<>(Collections.singletonList(event), pageable, 1);
 
-        when(IEventRepository.findAllWithDetails(pageable)).thenReturn(eventPage);
+        when(IEventRepository.findAll(pageable)).thenReturn(eventPage);
 
-        Page<Event> response = eventService.getAllEvents(pageable);
+        Page<EventResponse> response = eventService.getAllEvents(pageable);
 
         assertNotNull(response);
         assertEquals(1, response.getTotalElements());
@@ -71,11 +74,12 @@ public class EventServiceImplTest {
 
     @Test
     void testGetAllEventsExceptionHandling() {
-        when(IEventRepository.findAllWithDetails(any(Pageable.class))).thenThrow(new RuntimeException("Database error"));
+        when(IEventRepository.findAll(any(Pageable.class))).thenThrow(new RuntimeException("Database error"));
 
-        EventServiceException exception = assertThrows(EventServiceException.class, () -> {
-            eventService.getAllEvents(PageRequest.of(0, 10));
-        });
+        Pageable pageable = PageRequest.of(0, 10);
+        EventServiceException exception = assertThrows(EventServiceException.class, () ->
+            eventService.getAllEvents(pageable)
+        );
 
         assertEquals("Failed to fetch events", exception.getMessage());
     }
