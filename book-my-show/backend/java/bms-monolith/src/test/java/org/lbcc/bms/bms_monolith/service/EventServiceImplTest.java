@@ -56,6 +56,7 @@ class EventServiceImplTest {
     @Test
     void testGetAllEventsSuccess() {
         Event event = new Event();
+        event.setId(UUID.randomUUID());
         event.setTitle("Sample Event");
         event.setDescription("Sample Description");
 

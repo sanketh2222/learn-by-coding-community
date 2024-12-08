@@ -21,7 +21,7 @@ public class VendorSearchResponse {
         vendorDto.setGstNo(vendor.getGstNo());
         vendorDto.setPanNo(vendor.getPanNo());
         vendorDto.setStatus(vendor.getStatus());
-        vendorDto.setRegistrationDate(vendor.getRegistrationDate());
+        vendorDto.setRegistrationDate(String.valueOf(vendor.getRegistrationDate()));
         vendorDto.setLogoUrl(vendor.getLogoUrl());
         return vendorDto;
     }

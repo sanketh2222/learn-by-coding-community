@@ -10,6 +10,8 @@ import org.lbcc.bms.bms_monolith.common.entity.Vendor;
 import org.lbcc.bms.bms_monolith.common.enums.VendorStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class VendorOnboardRequest {
@@ -56,7 +58,7 @@ public class VendorOnboardRequest {
                 .website(vendorOnboardRequest.getWebsite())
                 .gstNo(vendorOnboardRequest.getGstNo())
                 .panNo(vendorOnboardRequest.getPanNo())
-                .registrationDate(vendorOnboardRequest.getRegistrationDate())
+                .registrationDate(LocalDateTime.parse(vendorOnboardRequest.getRegistrationDate()))
                 .logoUrl("logo-url-logo-url-logo-url-logo-url")
                 .status(VendorStatus.ACTIVE)
                 .build();
