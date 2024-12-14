@@ -13,20 +13,30 @@ import java.util.List;
 public class VendorSpecifications {
 
     public static Specification<Vendor> createSpecification(VendorSearchRequest searchRequest) {
+        if (searchRequest == null) {
+            // return all vendors without applying any filters (Conjunction)
+            return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+        }
+
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (StringUtils.isNotBlank(searchRequest.getVendorName())) {
-                predicates.add(criteriaBuilder.like(root.get("vendorName"), "%" + searchRequest.getVendorName() + "%"));
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("vendorName")),
+                        "%" + searchRequest.getVendorName().toLowerCase() + "%"
+                ));
             }
             if (StringUtils.isNotBlank(searchRequest.getVendorStatus())) {
                 predicates.add(criteriaBuilder.equal(root.get("vendorStatus"), searchRequest.getVendorStatus()));
             }
-            if (StringUtils.isNotBlank(searchRequest.getRegistrationDate())) {
+            if (searchRequest.getRegistrationDate() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("registrationDate"), searchRequest.getRegistrationDate()));
             }
 
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            return predicates.isEmpty()
+                    ? criteriaBuilder.conjunction()
+                    : criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 }

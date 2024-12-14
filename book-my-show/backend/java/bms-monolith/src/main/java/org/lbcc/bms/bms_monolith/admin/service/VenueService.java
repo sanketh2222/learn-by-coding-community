@@ -25,7 +25,7 @@ public class VenueService {
     private final SeatTypeService seatTypeService;
 
     @Autowired
-    VenueService(VenueRepository venueRepository, SeatTypeService seatTypeService) {
+    public VenueService(VenueRepository venueRepository, SeatTypeService seatTypeService) {
         this.venueRepository = venueRepository;
         this.seatTypeService = seatTypeService;
     }

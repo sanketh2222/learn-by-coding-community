@@ -1,5 +1,7 @@
 package org.lbcc.bms.bms_monolith.admin.controller;
 
+import jakarta.annotation.Nullable;
+import jakarta.websocket.server.PathParam;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
 import org.lbcc.bms.bms_monolith.admin.constants.BMSConstants;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchRequest;
@@ -30,7 +32,7 @@ public class AdminVendorOnboardingController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/onboard")
+    @PostMapping()
     public ResponseEntity<ApiResponse<VendorOnboardResponse>> onboardNewVendor(@RequestBody VendorOnboardRequest vendorOnboardRequest) {
         VendorOnboardResponse response = adminService.onboardNewVendor(vendorOnboardRequest);
         ApiResponse<VendorOnboardResponse> apiResponse = ApiResponse.<VendorOnboardResponse>builder()
@@ -53,8 +55,8 @@ public class AdminVendorOnboardingController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllVendors(
-            @ModelAttribute VendorSearchRequest searchRequest,
+    public ResponseEntity<ApiListResponse<Vendor>> getAllVendors(
+            @Nullable @ModelAttribute() VendorSearchRequest searchRequest,
             @PageableDefault(page = 0, size = 10)
             @SortDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
 

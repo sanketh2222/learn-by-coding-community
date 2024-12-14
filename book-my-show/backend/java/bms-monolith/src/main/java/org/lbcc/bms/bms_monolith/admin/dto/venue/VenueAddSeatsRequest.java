@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class VenueAddSeatsRequest {
-    String venueId;
+    private String venueId;
     private List<SeatDto> seatDtos;
 }
