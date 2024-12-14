@@ -24,7 +24,7 @@ public class SeatTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSeatType(@RequestBody SeatTypesRequestDto seatTypesRequestDto) {
+    public ResponseEntity<ApiListResponse<SeatTypeResponse>> createSeatType(@RequestBody SeatTypesRequestDto seatTypesRequestDto) {
         SeatTypeResponse response = seatTypeService.createSeatType(seatTypesRequestDto);
         ApiListResponse<SeatTypeResponse> apiResponse = ApiListResponse.<SeatTypeResponse>builder()
                 .success(true).message("Seat types created successfully")
