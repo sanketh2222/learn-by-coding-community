@@ -1,10 +1,6 @@
 package org.lbcc.bms.bms_monolith.common.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +20,7 @@ public class SeatInShow extends BaseAuditingEntity {
     @JoinColumn(name = "seat_type_in_show_id")
     private SeatTypeInShow seatTypeInShow;
 
-    @ManyToOne //fetch = FetchType.LAZY
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seat_id", nullable = false)
     private Seat seat;
 

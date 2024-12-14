@@ -70,8 +70,7 @@ public class AdminService {
     public Page<Vendor> searchVendors(VendorSearchRequest searchRequest, Pageable pageable) {
         try {
             Specification<Vendor> spec = VendorSpecifications.createSpecification(searchRequest);
-            return searchRequest.hasSearchCriteria() ? vendorRepository.findAll(spec, pageable)
-                    : vendorRepository.findAll(pageable);
+            return vendorRepository.findAll(spec, pageable);
         } catch (Exception e) {
             log.error("Error in searching vendors", e);
             return Page.empty();

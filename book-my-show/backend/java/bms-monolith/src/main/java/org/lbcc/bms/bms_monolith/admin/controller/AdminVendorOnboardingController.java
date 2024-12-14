@@ -1,6 +1,5 @@
 package org.lbcc.bms.bms_monolith.admin.controller;
 
-import jakarta.websocket.server.PathParam;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorOnboardResponse;
 import org.lbcc.bms.bms_monolith.admin.constants.BMSConstants;
 import org.lbcc.bms.bms_monolith.admin.dto.VendorSearchRequest;
