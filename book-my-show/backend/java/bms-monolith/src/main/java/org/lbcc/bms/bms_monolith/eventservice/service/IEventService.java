@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface IEventService {
 
-    Page<Event> getAllEvents(Pageable pageable);
+    Page<EventResponse>  getAllEvents(Pageable pageable);
 
     EventResponse hostEvent(EventDTO eventDTO);
 

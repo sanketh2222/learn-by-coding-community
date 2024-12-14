@@ -37,7 +37,6 @@ public class EventServiceImpl implements IEventService {
                             SeatTypeRepository seatTypeRepository,
                             VenueService venueService,
                             AdminService adminService) {
-    public EventServiceImpl(IEventRepository IEventRepository) {
         this.IEventRepository = IEventRepository;
         this.eventTypeRepository = eventTypeRepository;
         this.seatTypeRepository = seatTypeRepository;
@@ -91,10 +90,7 @@ public class EventServiceImpl implements IEventService {
 
         eventShows.forEach(show -> show.setEvent(event));
 
-        if (!event.getShow().isEmpty()) {
-            log.warn("no shows found in request");
-            event.setShow(eventShows);
-        }
+        event.setShow(eventShows);
 
         return event;
     }

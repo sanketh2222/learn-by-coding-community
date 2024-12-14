@@ -11,19 +11,15 @@ public class VendorSearchResponse {
     private List<VendorDto> vendorDtoList;
 
     public static VendorDto buildVendorDtoFromVendor(Vendor vendor) {
-        VendorDto vendorDto = new VendorDto();
-        vendorDto.setId(vendor.getId());
-        vendorDto.setName(vendor.getName());
-        vendorDto.setContactNumber(vendor.getContactNumber());
-        vendorDto.setEmail(vendor.getEmail());
-        vendorDto.setAddress(AddressDto.addressToAddressDto(vendor.getAddress()));
-        vendorDto.setWebsite(vendor.getWebsite());
-        vendorDto.setGstNo(vendor.getGstNo());
-        vendorDto.setPanNo(vendor.getPanNo());
-        vendorDto.setStatus(vendor.getStatus());
-        vendorDto.setRegistrationDate(vendor.getRegistrationDate());
-        vendorDto.setLogoUrl(vendor.getLogoUrl());
-        return vendorDto;
+        return VendorDto.builder()
+                .id(vendor.getId()).name(vendor.getName())
+                .contactNumber(vendor.getContactNumber()).email(vendor.getEmail())
+                .address(AddressDto.addressToAddressDto(vendor.getAddress()))
+                .website(vendor.getWebsite()).gstNo(vendor.getGstNo())
+                .panNo(vendor.getPanNo()).status(vendor.getStatus())
+                .registrationDate(String.valueOf(vendor.getRegistrationDate()))
+                .logoUrl(vendor.getLogoUrl())
+                .build();
     }
 
     public static List<VendorDto> buildVendorDtoListFromVendorList(List<Vendor> vendorList) {
